@@ -5,7 +5,7 @@ This repository contains supplementary code for the paper
 > Giulia Monopoli et al.
 > DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging, Journal of ..., volume, page, url
 
-Source code is available at < https://github.com/giuliamonopoli/Supplementary code for the paper: DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging>
+Source code is available at <URL>
 
 ## Abstract
 Early detection of mitral valve (MV) structural complications is a crucial clinical need. Key advances in deep learning-based
