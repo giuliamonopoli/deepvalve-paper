@@ -1,7 +1,4 @@
-# DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging
-
-
-# Supplementary code for the paper: Supplementary code for the paper: DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging
+# Supplementary code for the paper: DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging
 
 
 This repository contains supplementary code for the paper
