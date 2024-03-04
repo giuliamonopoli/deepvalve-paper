@@ -1,0 +1,11 @@
+dictionaryDefinitions:
+  - name: Supplementary code for the paper: DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging
+    path: .cspell_dict.txt
+    addWords: true
+dictionaries:
+  - Supplementary code for the paper: DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging
+ignoreWords: [
+    tableofcontents,
+    ipynb,
+    oneline
+  ]

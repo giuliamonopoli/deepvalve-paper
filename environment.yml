@@ -1,0 +1,5 @@
+name: "supplementary_code_for_the_paper:_deepvalve:_an_automatic_detection_pipeline_for_the_mitral_valve_in_cardiac_magnetic_resonance_imaging"
+channels:
+  - conda-forge
+dependencies:
+  - jupyter-book- python=3.10
