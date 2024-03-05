@@ -21,9 +21,19 @@ echocardiography. We propose metrics tailored for quality assessment of
 predicted thin structures based on Procrustes analysis.
 
 ## Getting started
+1. Clone the Repository
+  ```sh
+git clone https://github.com/Daniel-Haas-B/deepvalve.git
+ ```
+2. Navigate to the Repository Folder
+   ```sh
+   cd deepvalve
+ ```
+
+
 
 ### Pre-processing
-Add steps for pre-processing, ...
+
 
 
 ### Running simulation
