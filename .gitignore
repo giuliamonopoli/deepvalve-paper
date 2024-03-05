@@ -70,10 +70,18 @@ db.sqlite3-journal
 instance/
 .webassets-cache
 
-# Scrapy stuff:
+# VisualStudioCode stuff
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+.history/
+*.vsix
+.history
+.ionide
 .scrapy
-
-# Sphinx documentation
 docs/_build/
 
 # PyBuilder
