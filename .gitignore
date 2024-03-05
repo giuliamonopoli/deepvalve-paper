@@ -70,6 +70,19 @@ db.sqlite3-journal
 instance/
 .webassets-cache
 
+# VisualStudioCode stuff
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+.history/
+*.vsix
+.history
+.ionide
+.DS_Store
+
 # Scrapy stuff:
 .scrapy
 
