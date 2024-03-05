@@ -81,7 +81,12 @@ instance/
 *.vsix
 .history
 .ionide
+.DS_Store
+
+# Scrapy stuff:
 .scrapy
+
+# Sphinx documentation
 docs/_build/
 
 # PyBuilder
