@@ -15,7 +15,7 @@ data_frame_path = "/home/daniel/deepvalve/data/data_new.csv"
 # original images path of patients in deepvalve
 raw_imgs_path = "/home/daniel/data_for_AW"
 
-# annotations for the bounding boxes
+# annotations for the bounding boxes. 
 box_data_path = "/Users/simulauser/Documents/deepvalve/annotationweb/MAD_export_box"
 
 # export noraml annotations for leaflets

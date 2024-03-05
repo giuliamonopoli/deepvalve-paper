@@ -2,17 +2,17 @@
 
 #### For regression-based and DSNT-based models
 
- - testing the ResNet regression model
-
-    ```sh
-    python3 \code\regression\renet_main.py
-    ```
- - testing the U-net regression model
+ - testing the U-net regression model.
     
     ```sh
-    python3 \code\regression\unet_reg_main.py
+    python3 \code\regression\unet_main.py
     ```
 
+ - testing the DSNT regression model
+    
+    ```sh
+    python3 \code\regression\dsnt_main.py
+    ```
 
 #### For segmentation-based models
 

@@ -14,7 +14,7 @@ import torch.optim as optim
 import utils
 from torch.optim import lr_scheduler
 from torchvision import models
-from arten_model import UNetDNST
+from code.regression.dsnt_reg import UNetDNST
 
 # from model_dnst import  UNetDNST
 import dsntnn
@@ -160,9 +160,6 @@ def main():
     utils.set_seed(42)
     # Initialize wandb
     run = wandb.init(project="dsnt", entity="deepvlv", reinit=True)
-
-    # get wandb run name
-
     config = run.config
     config.learning_rate = 0.054
     config.epochs = 2000
@@ -172,8 +169,7 @@ def main():
     config.gamma = 0.45  # 0.6
     config.augment_prop = 2
     seed = 42
-    # model = "resnet50"
-    # activation = "sigmoid"
+
     config.schedule = (
         "CyclicLR"  # "StepLR" # "CosineAnnealingLR" # "WarmRestart" # "CyclicLR"
     )

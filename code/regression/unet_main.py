@@ -8,7 +8,6 @@ import sys
 
 sys.path.append("../")
 import numpy as np
-import pandas as pd
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -20,6 +19,7 @@ import segmentation_models_pytorch as segmentation_models
 
 import wandb
 
+# Ensure the external scripts or modules are correctly referenced
 sys.path.append("../")
 
 if not os.environ.get("PYTHONHTTPSVERIFY", "") and getattr(
@@ -29,87 +29,125 @@ if not os.environ.get("PYTHONHTTPSVERIFY", "") and getattr(
 
 
 class Reshape(nn.Module):
+    """A custom PyTorch module that reshapes input tensors to a specified shape."""
+
     def forward(self, x):
+        """Reshapes the input tensor.
+
+        Parameters:
+        - x: A tensor to be reshaped.
+
+        Returns:
+        - Tensor: Reshaped tensor with the new shape.
+        """
         return x.view(x.size(0), -1, 4)
 
 
 def print_and_return_results(since, model, epoch_loss, best_model_path, best_loss):
+    """Prints training results and returns the final and best model along with their losses.
+
+    Parameters:
+    - since: Time since the training started.
+    - model: The last state of the trained model.
+    - epoch_loss: The loss from the last epoch.
+    - best_model_path: The path to the best model's state dict.
+    - best_loss: The best observed loss during training.
+
+    Returns:
+    - Tuple containing the last model, last epoch loss, best model, and best loss.
+    """
     time_elapsed = time.time() - since
     print(f"Training complete in {time_elapsed // 60:.0f}m {time_elapsed % 60:.0f}s")
     print(f"Best val loss: {best_loss:4f}")
 
-    # load best model weights
+    # Load best model weights
     best_model = copy.deepcopy(model)
-    best_model.load_state_dict(torch.load(best_model_path)),  # load the best model
+    best_model.load_state_dict(torch.load(best_model_path))
 
-    return (
-        model,  # model is last model
-        epoch_loss,  # epoch_loss is the last loss
-        best_model,
-        best_loss,
-    )
+    return model, epoch_loss, best_model, best_loss
 
 
 def build_model(config, device="cpu"):
-    """
-    model=config.model, dropout=config.dropout, activation=config.activation)
-    Builds and compiles the CNN model.
-    """
+    """Builds and returns the CNN model based on the provided configuration.
 
+    Parameters:
+    - config: A configuration object containing model specifications.
+    - device: The device (CPU or GPU) the model should run on.
+
+    Returns:
+    - The constructed PyTorch model.
+
+    Raises:
+    - ValueError: If the specified model or activation function is not supported.
+    """
     if config.model == "unet":
         model = segmentation_models.Unet(
             encoder_name="efficientnet-b4",
             encoder_weights="imagenet",
-            classes=1,  # should not matter for now as we will modify last layer
-            activation=None,  # should not matter for now as we will modify last layer
+            classes=1,  # does not matter for now as we will modify last layer
+            activation=None,
         )
     else:
         raise ValueError("Model not supported.")
 
+    # Set activation function
     if config.activation == "relu":
         activation = nn.ReLU()
     elif config.activation == "sigmoid":
         activation = nn.Sigmoid()
     else:
         raise ValueError("Activation function not supported.")
+
     # Modify the last layer to match the output size
     model.segmentation_head = nn.Sequential(
         nn.AdaptiveAvgPool2d((1, 1)),  # Global average pooling
         nn.Flatten(),
-        nn.Linear(16, 10 * 4),  # its only 16 because of the global pooling
-        activation,  # Adding ctivation function
-        nn.Dropout(p=config.dropout),  # Adding dropout layer
+        nn.Linear(16, 10 * 4),
+        activation,
+        nn.Dropout(p=config.dropout),
         Reshape(),  # Reshape from [batch, 40] to [batch, 10, 4]
     )
 
-    # Move model to the device
     model = model.to(device)
-
     return model
 
 
 def train(dataloaders, model, criterion, optimizer, scheduler, device, config):
+    """
+    Trains a given model with provided data, optimizer, and learning rate scheduler.
+
+    Parameters:
+    - dataloaders (dict): A dictionary containing 'train' and 'val' DataLoader objects.
+    - model (torch.nn.Module): The neural network model to be trained.
+    - criterion (torch.nn.Module): The loss function.
+    - optimizer (torch.optim.Optimizer): The optimization algorithm.
+    - scheduler (torch.optim.lr_scheduler._LRScheduler): Scheduler for learning rate adjustment.
+    - device (torch.device): The device to train the model on ('cuda' or 'cpu').
+    - config (dict): A configuration dictionary containing training parameters such as epochs and patience.
+
+    Returns:
+    - model (torch.nn.Module): The trained model.
+    - epoch_loss (float): The loss of the last epoch.
+    - best_loss (float): The best validation loss achieved during training.
+    """
     since = time.time()
-    # create a temporary directory to store training checkpoints
+
     with TemporaryDirectory() as tmpdirname:
         best_model_path = os.path.join(tmpdirname, "temp_best_model.pt")
-
         torch.save(model.state_dict(), best_model_path)
+
         best_loss = np.inf
         no_improvement_count = (
-            0  # Initialize the counter for tracking validation loss improvement
+            0  # Initialize the counter of validation loss improvement
         )
 
         for epoch in range(config.epochs):
-            # print(f"Epoch {epoch}/{config.epochs - 1}")
-            # print("-" * 10)
 
             # log current learning rate
             for param_group in optimizer.param_groups:
                 current_lr = param_group["lr"]
             wandb.log({"current_lr": current_lr}, epoch)
 
-            # Each epoch has a training and validation phase
             for phase in ["train", "val"]:
                 if phase == "train":
                     model.train()  # Set model to training mode
@@ -118,7 +156,6 @@ def train(dataloaders, model, criterion, optimizer, scheduler, device, config):
 
                 running_loss = 0.0  # loss over the batches in epoch
 
-                # Iterate over data.
                 for i, data in enumerate(dataloaders[phase]):
                     # Get the input and output from the data loader
                     inputs = data["image"]
@@ -133,7 +170,6 @@ def train(dataloaders, model, criterion, optimizer, scheduler, device, config):
                         device
                     )
 
-                    # Set the parameter gradients to zero
                     optimizer.zero_grad()
 
                     # Forward pass
@@ -147,7 +183,6 @@ def train(dataloaders, model, criterion, optimizer, scheduler, device, config):
                             loss.backward()
                             optimizer.step()
 
-                    # statistics
                     running_loss += loss.item()
 
                 if phase == "train" and scheduler is not None:
@@ -178,52 +213,21 @@ def train(dataloaders, model, criterion, optimizer, scheduler, device, config):
                         since, model, epoch_loss, best_model_path, best_loss
                     )
 
-            # print()  # add a new line
-
         return print_and_return_results(
             since, model, epoch_loss, best_model_path, best_loss
         )
 
 
-def main():
-    utils.set_seed(42)
-    # Initialize wandb
-    run = wandb.init(project="new_annot_regression_unet", entity="deepvlv", reinit=True)
+def prepare_data(config):
+    """
+    Load and preprocess data according to the configuration.
 
-    # get wandb run name
+    Parameters:
+    - config: Configuration dictionary containing data loading parameters.
 
-    config = run.config
-    config.learning_rate = 0.0015
-    config.epochs = 1000
-    config.patience = 500
-    config.batch_size_train = 8
-    config.batch_size_val_test = 8
-    config.gamma = 0.48  # 0.6
-    config.augment_prop = 3
-    config.seed = 42
-    config.model = "unet"
-    config.activation = "sigmoid"
-    config.schedule = (
-        "CyclicLR"  # "StepLR" # "CosineAnnealingLR" # "WarmRestart" # "CyclicLR"
-    )
-    config.loss = "MSE"  # "huber" "rmse"
-    run_name = wandb.run.name + "_" + config.loss
-
-    print(f"#### Run name: {run_name}")
-    config.rotation = 0  # rotate or not the images in augmentation
-    config.crop_prob = 0.8  # crop or not the images in augmentation
-    config.dropout = 0.006
-    config.normalize_keypts = True  # whether to normalize the annotations between 0 and 1 using min-max normalization
-    config.loss_penalty_factor = 1.016  # factor to multiply the loss by for the custom loss function. If 1.0, the loss is the same as MSE
-    # because of this we will not add the MSE loss, only the custom loss
-    config.com_factor = 0.025  # factor to multiply the loss by for the center of mass loss. If 0.0, the loss is the same as MSE
-    # make dataframe with run name and configs
-    # df = pd.DataFrame.from_dict({k: [v] for k, v in config.items()})
-
-    # Set device
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-    # Load and preprocess data
+    Returns:
+    - dataloaders: A dictionary containing training and validation DataLoader objects.
+    """
     dataloaders = utils.load_and_process_data(
         batch_size_train=config.batch_size_train,
         batch_size_val_test=config.batch_size_val_test,
@@ -233,16 +237,20 @@ def main():
         rotation=config.rotation,
         crop_prob=config.crop_prob,
     )
+    return dataloaders
 
-    # Build the model
-    model = build_model(device=device, config=config)
-    wandb.watch(model)
 
-    # Define the optimizer and loss function
-    optimizer = optim.Adam(model.parameters(), lr=config.learning_rate)
-    if (
-        config.loss == "MSE"
-    ):  # this is not used anymore because we can use the custom loss function with penalty factor 1 (same as MSE)
+def select_criterion(config):
+    """
+    Select the loss function based on the configuration.
+
+    Parameters:
+    - config: Configuration dictionary containing loss function parameters.
+
+    Returns:
+    - criterion: The selected loss function.
+    """
+    if config.loss == "MSE":
         criterion = nn.MSELoss()
     elif config.loss == "customMSE":
         criterion = utils.CustomMSELoss(
@@ -252,24 +260,29 @@ def main():
         criterion = nn.HuberLoss()
     elif config.loss == "rmse":
         criterion = utils.RMSELoss()
+    else:
+        raise ValueError(f"Loss function {config.loss} not implemented")
+    return criterion
 
-    # else:
-    #    raise ValueError("Loss function not implemented")
 
-    # Decay LR by a factor of gamma every step_size epochs. Should it be none, set gamma to 0
-    config.max_lr_prop = (
-        5 if config.schedule == "CyclicLR" else 0
-    )  # *config.learning_rate if config.schedule == "CyclicLR" else None
-    config.cycle_step_size = 20 if config.schedule == "CyclicLR" else None
-    config.cyclic_mode = "triangular2"  # if config.schedule == "CyclicLR" else None
+def configure_scheduler(optimizer, config):
+    """
+    Configure the learning rate scheduler based on the configuration.
 
+    Parameters:
+    - optimizer: The optimization algorithm.
+    - config: Configuration dictionary containing scheduler parameters.
+
+    Returns:
+    - scheduler: The configured learning rate scheduler.
+    """
     if config.schedule == "CyclicLR":
         scheduler = torch.optim.lr_scheduler.CyclicLR(
             optimizer,
             base_lr=config.learning_rate,
             max_lr=config.max_lr_prop * config.learning_rate,
-            step_size_up=config.cycle_step_size,  # 5 epochs to go from base_lr to max_lr
-            step_size_down=config.cycle_step_size,  # 5 epochs to go from max_lr to base_lr
+            step_size_up=config.cycle_step_size,  # epochs to go from base_lr to max_lr
+            step_size_down=config.cycle_step_size,  # epochs to go from max_lr to base_lr
             mode=config.cyclic_mode,
             gamma=config.gamma,
             cycle_momentum=False,
@@ -282,7 +295,6 @@ def main():
         scheduler = lr_scheduler.CosineAnnealingWarmRestarts(
             optimizer, T_0=int(0.1 * config.epochs), T_mult=1, eta_min=0.0
         )
-
     elif config.schedule == "StepLR":
         scheduler = (
             lr_scheduler.StepLR(
@@ -291,21 +303,89 @@ def main():
             if config.gamma
             else None
         )
+    else:
+        raise ValueError(f"Scheduler {config.schedule} not implemented")
+    return scheduler
 
+
+def configure_settings(run):
+    """
+    Configure the settings for the model training including learning rate,
+    epochs, batch size, and other training parameters.
+
+    Parameters:
+    - run: The wandb run object.
+
+    Returns:
+    - The updated config with training parameters.
+    """
+    config = run.config
+    config.update(
+        dict(
+            learning_rate=0.0015,
+            epochs=1000,
+            patience=500,
+            batch_size_train=8,
+            batch_size_val_test=8,
+            gamma=0.48,
+            augment_prop=3,
+            seed=42,
+            model="unet",
+            activation="sigmoid",
+            schedule="CyclicLR",  # "StepLR" # "CosineAnnealingLR" # "WarmRestart" # "CyclicLR"
+            loss="MSE",  # "huber" "rmse"
+            rotation=0,  # rotate or not the images in augmentation
+            crop_prob=0.8,  # crop or not the images in augmentation
+            dropout=0.006,
+            normalize_keypts=True,  # whether to normalize the annotations between 0 and 1 using min-max normalization
+            loss_penalty_factor=1.016,  # factor to multiply the loss by for the custom loss function. If 1.0, the loss is the same as MSE
+            com_factor=0.025,  # factor to multiply the loss by for the center of mass loss. If 0.0, the loss is the same as MSE
+        )
+    )
+    return config
+
+
+def main():
+    utils.set_seed(42)
+
+    # Initialize wandb
+    run = wandb.init(project="new_annot_regression_unet", entity="deepvlv", reinit=True)
+
+    config = configure_settings(run)
+    run_name = wandb.run.name + "_" + config.loss
+
+    # Set device
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    # Load and preprocess data
+    dataloaders = prepare_data(config)
+
+    # Build the model
+    model = build_model(device=device, config=config)
+    wandb.watch(model)
+
+    # Define the optimizer and loss function
+    optimizer = optim.Adam(model.parameters(), lr=config.learning_rate)
+    criterion = select_criterion(config)
+
+    # Decay LR by a factor of gamma every step_size epochs. Should it be none, set gamma to 0
+    config.max_lr_prop = 5 if config.schedule == "CyclicLR" else 0
+    config.cycle_step_size = 20 if config.schedule == "CyclicLR" else None
+    config.cyclic_mode = "triangular2"  # if config.schedule == "CyclicLR" else None
+
+    scheduler = configure_scheduler(optimizer, config)
     last_model, last_loss, best_model, best_loss = train(
         dataloaders, model, criterion, optimizer, scheduler, device, config
     )
-    # df["best_loss"] = [best_loss]
-    # df["last_loss"] = [last_loss]
 
-    # df.to_csv("regression_results/metadata.csv", index=False, mode="a")
     run.finish()
+
     # now save the model to disk
-    # torch.save(last_model.state_dict(), f"regression_results/{run_name}_last_model.pth")
+    torch.save(last_model.state_dict(), f"regression_results/{run_name}_last_model.pth")
 
     torch.save(
         best_model.state_dict(),
-        f"unet_regression_results_exploitation/{run_name}_best_model.pth",
+        f"unet_regression_results/{run_name}_best_model.pth",
     )
 
 

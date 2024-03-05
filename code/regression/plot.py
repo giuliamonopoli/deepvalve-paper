@@ -15,7 +15,7 @@ import torch.optim as optim
 import utils
 from torch.optim import lr_scheduler
 from torchvision import models
-from arten_model import UNetDNST
+from code.regression.dsnt_reg import UNetDNST
 import matplotlib.pyplot as plt
 
 device = "cpu"
