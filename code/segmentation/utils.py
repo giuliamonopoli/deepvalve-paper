@@ -203,13 +203,14 @@
 #     torch.cuda.manual_seed(seed)
 #     torch.backends.cudnn.deterministic = True
 
+import albumentations as album
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import albumentations as album
 import torch
-import config
 from torch.utils.data import ConcatDataset, DataLoader
+
+import config
 
 
 def visualize(**images):

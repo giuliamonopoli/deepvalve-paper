@@ -1,8 +1,11 @@
-import torch
-import os, cv2
-import numpy as np
-import utils
+import os
 
+import albumentations as A
+import cv2
+import numpy as np
+import torch
+
+import utils
 
 # class heartdataset(torch.utils.data.Dataset):
 #     def __init__(
@@ -44,9 +47,6 @@ import utils
 #         :,
 #     ]
 
-import cv2
-import numpy as np
-import albumentations as A
 
 
 def crop_image(image, mask):

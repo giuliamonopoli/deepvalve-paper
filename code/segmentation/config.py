@@ -1,12 +1,12 @@
-import torch
 import segmentation_models_pytorch.utils as smp_utils
+import torch
 from giulia_test import BCEWithLogitsLoss
 
 ## dataset parameters
 raw_imgs_path = "/home/daniel/data_for_AW"
 annotation_json = "/home/daniel/deepvalve/data/new_annotations"
+
 ## these two not needed if the annotations.json file is in the same folder
-box_data_path = ""
 annotation_folder = ""
 data_frame_path = "/home/daniel/deepvalve/data/data_new.csv"
 
@@ -23,7 +23,6 @@ mask_generation_method = "line"  # 'polygon' or 'line', will not sweep
 ## if True then augmentations are applied can repeat the same number for multiple times as the probability of
 # that augmentation is not 1 so random images will be augmented
 augmentation = 3
-
 
 n_points = 30
 w_mask = 2
@@ -64,9 +63,6 @@ step_size_div_factor = 2  ## the number to divide step size by
 ##test_data parameters
 x_test_dir = path_for_segmentation_data_model + "/test/images/"
 y_test_dir = path_for_segmentation_data_model + "/test/masks/"
-model_save_dir = (
-    "/home/daniel/deepvalve/src/segmentation/segmentation_results_exploitation/"
-)
 
 ## optimizer parameters
 lr = 0.04  ## learning rate for adam optimizer

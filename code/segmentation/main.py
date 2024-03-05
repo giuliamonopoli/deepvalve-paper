@@ -1,28 +1,32 @@
 import os
-import cv2
-import numpy as np
-import pandas as pd
-import random, tqdm
-import seaborn as sns
-import matplotlib.pyplot as plt
-import utils
-import config as config_file
-import segmentation_models_pytorch.utils as smp_utils
+import random
 import warnings
 
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import segmentation_models_pytorch.utils as smp_utils
+import tqdm
+
+import config as config_file
+import utils
+
 warnings.filterwarnings("ignore")
-from dataset import heartdataset
-import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader, ConcatDataset
+import ssl
+
 import albumentations as album
 import segmentation_models_pytorch as smp
+import torch
+import torch.nn as nn
 import wandb
-import ssl
-from torch.optim.lr_scheduler import ReduceLROnPlateau, CyclicLR
-from torch.optim import lr_scheduler
 from giulia_test import BCEWithLogitsLoss
+from torch.optim import lr_scheduler
+from torch.optim.lr_scheduler import CyclicLR, ReduceLROnPlateau
+from torch.utils.data import ConcatDataset, DataLoader
 
+from dataset import heartdataset
 
 # disable default certificate verification
 if not os.environ.get("PYTHONHTTPSVERIFY", "") and getattr(

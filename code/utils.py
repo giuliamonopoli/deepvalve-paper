@@ -3,15 +3,14 @@ import random
 
 import albumentations as A
 import cv2
-import data_loader as dl
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torch.nn as nn
-from scipy.interpolate import splev
-from scipy.interpolate import splprep
-from torch.utils.data import ConcatDataset
-from torch.utils.data import DataLoader
+from scipy.interpolate import splev, splprep
+from torch.utils.data import ConcatDataset, DataLoader
+
+import data_loader as dl
 
 
 def set_seed(seed):

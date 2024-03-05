@@ -4,22 +4,20 @@ import ssl
 import sys
 import time
 from tempfile import TemporaryDirectory
-import sys
 
 sys.path.append("../")
+from code.regression.dsnt_reg import UNetDNST
+
+# from model_dnst import  UNetDNST
+import dsntnn
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import utils
+import wandb
 from torch.optim import lr_scheduler
 from torchvision import models
-from code.regression.dsnt_reg import UNetDNST
-
-# from model_dnst import  UNetDNST
-import dsntnn
-
-import wandb
 
 sys.path.append("../")
 

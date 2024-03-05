@@ -4,20 +4,17 @@ import ssl
 import sys
 import time
 from tempfile import TemporaryDirectory
-import sys
 
 sys.path.append("../")
 import numpy as np
+import segmentation_models_pytorch as segmentation_models
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import utils
+import wandb
 from torch.optim import lr_scheduler
 from torchvision import models
-import segmentation_models_pytorch as segmentation_models
-
-
-import wandb
 
 # Ensure the external scripts or modules are correctly referenced
 sys.path.append("../")

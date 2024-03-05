@@ -1,10 +1,11 @@
+from functools import reduce
+from operator import mul
+
+import dsntnn
+import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from functools import reduce
-import dsntnn
-import matplotlib.pyplot as plt
-from operator import mul
 
 
 class DoubleConv(nn.Module):
