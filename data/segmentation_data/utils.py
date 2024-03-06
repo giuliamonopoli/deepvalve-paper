@@ -1,15 +1,16 @@
+import os
+import random
+import sys
+
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+from PIL import Image, ImageDraw
 from scipy.interpolate import splev, splprep
 from torch.utils.data import ConcatDataset, DataLoader, Dataset
-import random
-import os
-from PIL import Image, ImageDraw
-import sys
 
-sys.path.append("../../src/segmentation/")
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'code', 'segmentation'))
 import config
 
 
@@ -54,18 +55,18 @@ def create_mask_polygon(image, dictionary, no_of_points=40):
     # Convert the blank image to a numpy array
     mask = np.array(mask)
 
-    #     # # Optionally, display the images and the masks
-    #     # for i in range(len(x)):
-    #     # plt.figure()
-    #     # plt.subplot(1,2,1)
-    #     # plt.imshow(x[i], cmap='gray')
-    #     # plt.title('Image')
-    #     # plt.subplot(1,2,2)
-    #     # plt.imshow(masks[i], cmap='gray')
-    #     # plt.title('Mask')
-    #     # plt.show()
+    # # Optionally, display the images and the masks
+    # for i in range(len(x)):
+    # plt.figure()
+    # plt.subplot(1,2,1)
+    # plt.imshow(x[i], cmap='gray')
+    # plt.title('Image')
+    # plt.subplot(1,2,2)
+    # plt.imshow(masks[i], cmap='gray')
+    # plt.title('Mask')
+    # plt.show()
 
-    #   # Return the mask as a binary array
+    # Return the mask as a binary array
     return mask.astype(bool)
 
 
@@ -114,34 +115,6 @@ def create_mask_line(image, annotation, no_of_points=40, thickness=2):
     final_mask = np.logical_or(mask_septal, mask_lateral)
 
     return final_mask.astype(bool)
-
-
-# def create_mask_line(image, annotation, no_of_points=40,thickness=2):
-#     """
-#     Plot points on an image using a binary mask with added thickness for one leaflet only.
-
-#     Parameters:
-#         image (ndarray): NumPy array containing the image.
-#         coordinates_array (ndarray): NumPy array containing the coordinates.
-#         thickness (int): Thickness of the plotted points (default is 3).
-
-#     Returns:
-#         None (displays the image and mask).
-#     """
-#     coordinates = annotation.get('leaflet_septal')
-#     coordinates=get_spline_pts(coordinates,no_of_points)
-
-#     # Convert floating-point coordinates to integers
-#     coordinates_array = coordinates.astype(int)
-
-#     # Create a blank mask with the same size as the image
-#     mask = np.zeros_like(image)
-
-#     # Plot the points on the mask with added thickness
-#     for x, y in coordinates_array:
-#         mask[max(0, y - thickness):min(mask.shape[0], y + thickness +1),
-#              max(0, x - thickness):min(mask.shape[1], x + thickness +1)] = 1
-#     return mask.astype(bool)
 
 
 # Define a custom dataset class

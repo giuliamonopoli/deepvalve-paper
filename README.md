@@ -19,24 +19,40 @@ UNET-REG and UNET-SEG) and introducing a novel hybrid model
 echocardiography. We propose metrics tailored for quality assessment of
 predicted thin structures based on Procrustes analysis.
 
+## Our pipeline and examples of predictions from our models
+
+
+The base structure of the pipeline can be seen below
+<p align="center">
+<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/adding-code-and-deps/figs/DVpipeline.png"/>
+<p align="center">
+
+pred_regression
+
+Some predictions of the regression model can be seen at
+<p align="center">
+<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/adding-code-and-deps/figs/regresSion_plot4.pdf"/>
+<p align="center">
+
+While some of the segmentations can be seen below:
+<p align="center">
+<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/adding-code-and-deps/figs/segm_model.png"/>
+<p align="center">
+
 ## Getting started
 1. Clone the Repository
   ```sh
-git clone https://github.com/Daniel-Haas-B/deepvalve.git
+git clone https://github.com/giuliamonopoli/deepvalve-paper.git
  ```
-2. Navigate to the Repository Folder
-   ```sh
-   cd deepvalve
- ```
-
 
 
 ### Pre-processing
 
-
+This repository assumes some previous structure. Our dataloader object, for example, requires some sort of coordinate annotations for regression tasks and also a previous set of masks to be used as a ground truth for the segmentation models.
 
 ### Running simulation
-Add steps for running simulations, ...
+
+For clear instructions on how to run the models, we refer to the [code directory readme](/code/README.md).
 
 
 ### Postprocessing

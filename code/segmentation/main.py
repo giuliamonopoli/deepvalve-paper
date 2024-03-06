@@ -1,28 +1,25 @@
 import os
-import cv2
-import numpy as np
-import pandas as pd
-import random, tqdm
-import seaborn as sns
-import matplotlib.pyplot as plt
-import utils
-import config as config_file
-import segmentation_models_pytorch.utils as smp_utils
 import warnings
 
+import numpy as np
+import pandas as pd
+import segmentation_models_pytorch.utils as smp_utils
+
+import config as config_file
+import utils
+
 warnings.filterwarnings("ignore")
-from dataset import heartdataset
+import ssl
+
+import segmentation_models_pytorch as smp
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, ConcatDataset
-import albumentations as album
-import segmentation_models_pytorch as smp
 import wandb
-import ssl
-from torch.optim.lr_scheduler import ReduceLROnPlateau, CyclicLR
 from torch.optim import lr_scheduler
-from giulia_test import BCEWithLogitsLoss
+from torch.optim.lr_scheduler import CyclicLR
+from torch.utils.data import ConcatDataset, DataLoader
 
+from dataset import heartdataset
 
 # disable default certificate verification
 if not os.environ.get("PYTHONHTTPSVERIFY", "") and getattr(
@@ -34,7 +31,6 @@ if not os.environ.get("PYTHONHTTPSVERIFY", "") and getattr(
 
 # Set seed for reproducibility
 utils.seed_everything(config_file.seed)
-
 
 # Set paths to train, val and test images and masks
 DATA_DIR = config_file.path_for_segmentation_data_model
@@ -100,9 +96,6 @@ def train(optimizer, config, train_loader, valid_loader, model, loss, metrics, d
     train_logs_list, valid_logs_list = [], []
 
     # Define the learning rate scheduler
-    # scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=config.lr_scheduler_step_size, gamma=config.lr_scheduler_gamma)
-    # scheduler = ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=5, threshold=0.01, min_lr=1e-1)
-
     if config.scheduler_mode == "CyclicLR":
         scheduler = CyclicLR(
             optimizer,
@@ -134,7 +127,6 @@ def train(optimizer, config, train_loader, valid_loader, model, loss, metrics, d
 
     # Initialize early stopping parameters
     no_improvement_count = 0
-    best_epoch = 0
 
     for i in range(0, config.epochs):
         train_logs = train_epoch.run(train_loader)
@@ -149,15 +141,6 @@ def train(optimizer, config, train_loader, valid_loader, model, loss, metrics, d
 
         train_logs_list.append(train_logs)
         valid_logs_list.append(valid_logs)
-        # print(train_logs)
-        # Store the learning rate and epoch values
-        # current_lr = scheduler.get_last_lr()[0] ## for stepLR
-        # current_lr = optimizer.param_groups[0]['lr'] ## for RedonPLateau
-        # lr_values.append(current_lr)
-        # epoch_values.append(i)
-        # # Update the learning rate
-        # # scheduler.step()
-        # scheduler.step(valid_logs['iou_score'])
         scheduler.step()
         current_lr = optimizer.param_groups[0]["lr"]
         wandb.log({"current_lr": current_lr}, i)
@@ -172,7 +155,7 @@ def train(optimizer, config, train_loader, valid_loader, model, loss, metrics, d
             # Model saved as best_model.pth
             torch.save(
                 model.state_dict(),
-                f"/home/daniel/deepvalve/src/segmentation/segmentation_results_exploitation/{config.run_name}best_model.pth",
+                f"segmentation_results/{config.run_name}best_model.pth",
             )
             print("Model saved!")
         else:
@@ -186,7 +169,7 @@ def train(optimizer, config, train_loader, valid_loader, model, loss, metrics, d
 
         torch.save(
             model.state_dict(),
-            f"/home/daniel/deepvalve/src/segmentation/segmentation_results_exploitation/{config.run_name}best_model.pth",
+            f"segmentation_results/{config.run_name}best_model.pth",
         )
 
 
@@ -210,9 +193,6 @@ def get_loaders(config, preprocessing_fn):
     print("Number of training images: ", len(train_loader.dataset))
 
     # Function to select the appropriate augmentation function
-
-    augmentation = config.augmentation
-
     if config.augmentation:
         if isinstance(config.augmentation, int):
             augmentation_fns = utils.get_augmentation_by_value([config.augmentation])
@@ -257,8 +237,6 @@ def get_loaders(config, preprocessing_fn):
         class_rgb_values=select_class_rgb_values,
     )
 
-    # Get train and val data loaders
-    # train_loader = DataLoader(train_dataset, batch_size=config.batch_size, shuffle=True, num_workers=config.workers)
     valid_loader = DataLoader(
         valid_dataset,
         batch_size=config.batch_size,
@@ -341,8 +319,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# print(f'Best validation IoU score: {best_iou_score:.4f} achieved at epoch {best_epoch}.')
-
-# wandb.log({"learning_rate": current_lr, "Train_Dice_loss":train_logs.get('dice_loss'), "Train_IoU_score":train_logs.get('iou_score')
-#            , "Valid_Dice_loss":valid_logs.get('dice_loss'), "Valid_IoU_score":valid_logs.get('iou_score'),"best_epoch":best_epoch})

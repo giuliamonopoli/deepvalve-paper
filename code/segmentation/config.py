@@ -1,22 +1,21 @@
-import torch
 import segmentation_models_pytorch.utils as smp_utils
-from giulia_test import BCEWithLogitsLoss
+import torch
 
 ## dataset parameters
-raw_imgs_path = "/home/daniel/data_for_AW"
-annotation_json = "/home/daniel/deepvalve/data/new_annotations"
+raw_imgs_path = "/path/to/raw/images"
+annotation_json = "/path/to/annotations.json"
+
 ## these two not needed if the annotations.json file is in the same folder
-box_data_path = ""
-annotation_folder = ""
-data_frame_path = "/home/daniel/deepvalve/data/data_new.csv"
+annotation_folder = "/path/to/annotations.json" 
+data_frame_path = "/path/to/data.csv"
 
 labels = "label_class_dict.csv"
 
 # create_data parameters (this is for creation only and not for giving input to model for that use model parameters)
-no_of_points = 30  # will not sweep
-mask_thickness = 2  # will not sweep
+no_of_points = 30  # arbitrary number of points to be used for creating the mask
+mask_thickness = 2  # arbitrary mask thickness to be used for creating the mask
 path_for_segmentation_data_folder = f"."  ## base path for all the segmentation data
-mask_generation_method = "line"  # 'polygon' or 'line', will not sweep
+mask_generation_method = "line"  # 'polygon' or 'line'
 
 ## model parameters
 
@@ -24,12 +23,12 @@ mask_generation_method = "line"  # 'polygon' or 'line', will not sweep
 # that augmentation is not 1 so random images will be augmented
 augmentation = 3
 
-
 n_points = 30
 w_mask = 2
 
+# Important! note the path below assumes the masks are already created and saved in the folder with that name
 path_for_segmentation_data_model = f"../../data/segmentation_data/segmentation_lines_{n_points}_{w_mask}"  ## path for one of the trail,test,val folders to used in model
-run_name = "Unet-200-run-new_annotations-1"  ## name of the run for saving the model , by default uses the random run name from weights and biases
+run_name = "your_run"  ## name of the run for saving the model , by uses the random run name from weights and biases
 seed = 42
 ENCODER = "efficientnet-b4"
 ENCODER_WEIGHTS = "imagenet"
@@ -48,7 +47,6 @@ batch_size = 8
 epochs = 1000
 workers = 0
 patience = 500
-loss = BCEWithLogitsLoss(ignore_channels=[0])
 metrics = smp_utils.metrics.IoU(threshold=threshold)
 lr_scheduler_step_size = 20  # how many epochs the learning rate will be decayed
 lr_scheduler_gamma = 0.3  # how much the learning rate will be reduced after each step
@@ -64,9 +62,6 @@ step_size_div_factor = 2  ## the number to divide step size by
 ##test_data parameters
 x_test_dir = path_for_segmentation_data_model + "/test/images/"
 y_test_dir = path_for_segmentation_data_model + "/test/masks/"
-model_save_dir = (
-    "/home/daniel/deepvalve/src/segmentation/segmentation_results_exploitation/"
-)
 
 ## optimizer parameters
 lr = 0.04  ## learning rate for adam optimizer

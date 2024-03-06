@@ -1,12 +1,18 @@
 import sys
+import os
 
-sys.path.append("/home/daniel/deepvalve/src/segmentation/")
-sys.path.append("/home/daniel/deepvalve/src/")
+# Append the "code" directory
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'code'))
+
+# Append the "code/segmentation" directory
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'code', 'segmentation'))
 
 
 import argparse
+
 import config as cfg
 import data_loader as dl
+
 import utils
 
 

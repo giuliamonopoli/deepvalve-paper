@@ -1,15 +1,17 @@
-from dataclasses import dataclass, InitVar
-from typing import List, Dict
-import pandas as pd
 import json
-import os, config
-import numpy as np
-import torch
-from torch.utils.data import Dataset, DataLoader
-import SimpleITK as sitk
-import cv2
+import os
 from collections import Counter
+from dataclasses import InitVar, dataclass
+from typing import Dict, List
+
+import cv2
+import numpy as np
+import pandas as pd
+import SimpleITK as sitk
 from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader, Dataset
+
+import config
 import utils as ut
 
 
@@ -87,8 +89,8 @@ class PreprocessDataset:
             list: List of rescaled annotation data dictionaries.
         """
 
-        max_width = 448  # max([x["bounding_box"][2] for x in annotation_data_list])
-        max_height = 448  # max([x["bounding_box"][3] for x in annotation_data_list])
+        max_width = 448  # arbitrary value due to pretrained nets
+        max_height = 448 
 
         for annotation_data in annotation_data_list:
             for frame in annotation_data["annotations"]:

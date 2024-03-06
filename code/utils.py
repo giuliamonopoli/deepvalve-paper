@@ -3,15 +3,14 @@ import random
 
 import albumentations as A
 import cv2
-import data_loader as dl
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torch.nn as nn
-from scipy.interpolate import splev
-from scipy.interpolate import splprep
-from torch.utils.data import ConcatDataset
-from torch.utils.data import DataLoader
+from scipy.interpolate import splev, splprep
+from torch.utils.data import ConcatDataset, DataLoader
+
+import data_loader as dl
 
 
 def set_seed(seed):
@@ -505,9 +504,7 @@ def load_and_process_data(
         crop_height=height,
         crop_width=width,
         crop_prob=0,
-    )  # this is silly for now but necessary
-
-    # this code above is done in a strange way will fix later.
+    )
 
     # load data loaders
     training_loader = dl.get_data_loader(
