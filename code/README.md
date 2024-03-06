@@ -1,4 +1,3 @@
-### Outline of the code structure
 
 #### For regression-based and DSNT-based models
 

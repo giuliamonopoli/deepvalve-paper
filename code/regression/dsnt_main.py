@@ -17,9 +17,7 @@ import torch.optim as optim
 import utils
 import wandb
 from torch.optim import lr_scheduler
-from torchvision import models
 
-sys.path.append("../")
 
 if not os.environ.get("PYTHONHTTPSVERIFY", "") and getattr(
     ssl, "_create_unverified_context", None
@@ -121,7 +119,11 @@ def train(dataloaders, model, criterion, optimizer, scheduler, device, config):
             # log current learning rate
             for param_group in optimizer.param_groups:
                 current_lr = param_group["lr"]
-            wandb.log({"current_lr": current_lr}, epoch)
+
+            if config.use_wandb:
+                wandb.log({"current_lr": current_lr}, epoch)
+            else:
+                print(f"Epoch: {epoch}, Current LR: {current_lr}")
 
             for phase in ["train", "val"]:
                 if phase == "train":
@@ -164,7 +166,10 @@ def train(dataloaders, model, criterion, optimizer, scheduler, device, config):
                     scheduler.step()
 
                 epoch_loss = running_loss / len(dataloaders[phase].dataset)
-                wandb.log({f"{phase}_epoch_loss": epoch_loss}, epoch)
+                if config.use_wandb:
+                    wandb.log({f"{phase}_epoch_loss": epoch_loss}, epoch)
+                else:
+                    print(f"{phase} Loss: {epoch_loss:.4f}")
 
                 # print(f"{phase} Loss: {epoch_loss:.4f}")
 
@@ -306,18 +311,30 @@ def configure_settings(run):
             normalize_keypts=True,  # whether to normalize the annotations between 0 and 1 using min-max normalization
             loss_penalty_factor=1.016,  # factor to multiply the loss by for the custom loss function. If 1.0, the loss is the same as MSE
             com_factor=0.025,  # factor to multiply the loss by for the center of mass loss. If 0.0, the loss is the same as MSE
+            use_wandb=False if run is None else True,
         )
     )
 
 
 def main():
     utils.set_seed(42)
+    use_wandb = False # Set to True to use Weights and Biases
     # Initialize wandb
-    run = wandb.init(project="dsnt", entity="deepvlv", reinit=True)
+    if use_wandb:
+        run = wandb.init(project="Your_project", entity="Your_entity", reinit=True)
+    else:
+        run = None
 
     seed = 42
     config = configure_settings(run)
-    run_name = wandb.run.name + "_" + config.loss
+    
+    if use_wandb:
+        run_name = wandb.run.name 
+    else:
+        run_name = "Your_run_name"
+
+    run_name += f"{config.loss}"
+
 
     print(f"#### Run name: {run_name}")
 
@@ -329,7 +346,8 @@ def main():
 
     # Build the model
     model = UNetDNST().to(device)
-    wandb.watch(model)
+    if use_wandb:
+        wandb.watch(model)
 
     # Define the optimizer and loss function
     optimizer = optim.Adam(model.parameters(), lr=config.learning_rate)
@@ -348,7 +366,8 @@ def main():
         dataloaders, model, criterion, optimizer, scheduler, device, config
     )
 
-    run.finish()
+    if use_wandb:
+        run.finish()
 
     # now save the model to disk
     torch.save(best_model.state_dict(), f"dsnt_results/{run_name}_best_model.pth")

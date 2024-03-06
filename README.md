@@ -22,7 +22,7 @@ predicted thin structures based on Procrustes analysis.
 ## Getting started
 1. Clone the Repository
   ```sh
-git clone https://github.com/Daniel-Haas-B/deepvalve.git
+git clone https://github.com/giuliamonopoli/deepvalve-paper.git
  ```
 2. Navigate to the Repository Folder
    ```sh

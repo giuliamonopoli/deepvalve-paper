@@ -504,9 +504,7 @@ def load_and_process_data(
         crop_height=height,
         crop_width=width,
         crop_prob=0,
-    )  # this is silly for now but necessary
-
-    # this code above is done in a strange way will fix later.
+    )
 
     # load data loaders
     training_loader = dl.get_data_loader(
