@@ -90,8 +90,8 @@ class PreprocessDataset:
             list: List of rescaled annotation data dictionaries.
         """
 
-        max_width = 448  # max([x["bounding_box"][2] for x in annotation_data_list])
-        max_height = 448  # max([x["bounding_box"][3] for x in annotation_data_list])
+        max_width = 448  # arbitrary value due to pretrained nets
+        max_height = 448 
 
         for annotation_data in annotation_data_list:
             for frame in annotation_data["annotations"]:
