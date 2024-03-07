@@ -1,6 +1,7 @@
+# Adapted from: https://github.com/OmarJItani/Iterative-Closest-Point-Algorithm/
+
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
-
 
 def best_fit_transform(A, B):
     """
