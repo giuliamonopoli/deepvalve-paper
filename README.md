@@ -43,7 +43,7 @@ git clone https://github.com/giuliamonopoli/deepvalve-paper.git
 
 This repository is based on a pre-defined input data structure. Our dataloader object, for example, requires coordinate annotations (for regression task ground truths) or a set of 2D masks (for segmentation task ground truths).
 
-### Running simulation
+### Training
 
 For clear instructions on how to run the models, we refer to the [code directory readme](/code/README.md).
 
