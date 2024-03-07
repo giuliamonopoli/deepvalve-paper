@@ -25,19 +25,18 @@ predicted thin structures based on Procrustes analysis.
 
 The base structure of the pipeline can be seen below
 <p align="center">
-<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/adding-code-and-deps/figs/PIPE.png"/>
+<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/main/figs/PIPE.png"/>
 <p align="center">
 
-pred_regression
 
-Some predictions of the regression model can be seen at
+An example of predictions of the regression model can be seen in the following figure:
 <p align="center">
-<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/adding-code-and-deps/figs/regresSion_plot4.pdf"/>
+<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/main/figs/regresSion_plot4.png"/>
 <p align="center">
 
-While some of the segmentations can be seen below:
+Finally, an example of the segmentation model's prediction can be seen below:
 <p align="center">
-<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/adding-code-and-deps/figs/SEG_COMPARISON3.png"/>
+<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/main/figs/SEG_COMPARISON3.png"/>
 <p align="center">
 
 ## Getting started
