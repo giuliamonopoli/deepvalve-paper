@@ -3,7 +3,8 @@
 
 This repository contains supplementary code for the paper
 > Giulia Monopoli et al.
-> DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging
+> DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging.\
+> Submitted to *International Conference on Medical Image Computing and Computer-Assisted Intervention*, 2024.
 
 
 ## Abstract
@@ -40,6 +41,8 @@ While some of the segmentations can be seen below:
 <p align="center">
 
 ## Getting started
+**Note:** Date privacy restricts sharing of the original dataset and annotations. The code in this repository can be adapted to your own purposes. It is not intended to be able to perform automatic mitral valve detection in an end-to-end fashion in its current state.
+
 1. Clone the Repository
   ```sh
 git clone https://github.com/giuliamonopoli/deepvalve-paper.git
@@ -48,7 +51,7 @@ git clone https://github.com/giuliamonopoli/deepvalve-paper.git
 
 ### Pre-processing
 
-This repository assumes some previous structure. Our dataloader object, for example, requires some sort of coordinate annotations for regression tasks and also a previous set of masks to be used as a ground truth for the segmentation models.
+This repository is based on a pre-defined input data structure. Our dataloader object, for example, requires coordinate annotations (for regression task ground truths) or a set of 2D masks (for segmentation task ground truths).
 
 ### Running simulation
 
