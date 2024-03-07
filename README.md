@@ -23,21 +23,11 @@ predicted thin structures based on Procrustes analysis.
 ## Our pipeline and examples of predictions from our models
 
 
-The base structure of the pipeline can be seen below
+The base structure of the project's pipeline can be seen below
 <p align="center">
-<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/main/figs/PIPE.png"/>
-<p align="center">
-
-
-An example of predictions of the regression model can be seen in the following figure:
-<p align="center">
-<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/main/figs/regresSion_plot4.png"/>
+<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/main/figs/DeepValve_pipeline.png"/>
 <p align="center">
 
-Finally, an example of the segmentation model's prediction can be seen below:
-<p align="center">
-<img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/main/figs/SEG_COMPARISON3.png"/>
-<p align="center">
 
 ## Getting started
 **Note:** Date privacy restricts sharing of the original dataset and annotations. The code in this repository can be adapted to your own purposes. It is not intended to be able to perform automatic mitral valve detection in an end-to-end fashion in its current state.
@@ -47,6 +37,7 @@ Finally, an example of the segmentation model's prediction can be seen below:
 git clone https://github.com/giuliamonopoli/deepvalve-paper.git
  ```
 
+2. Install the [requirements](requirements.txt).
 
 ### Pre-processing
 
