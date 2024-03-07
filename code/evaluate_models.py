@@ -23,7 +23,6 @@ class EvaluateRegression(object):
     - Mean Absolute Percentage Error (mape)
     - Cosine Similarity (cosine_similarity)
     - Procrustes distance (pro_dist)
-    *Some sklearn metrics are not compatible with our data structures, so they are manually defined.
     """
 
     def __init__(self, y_true, y_pred, weights=None):
@@ -104,22 +103,6 @@ class EvaluateRegression(object):
             pro_dist.append(np.sqrt(d))
         return np.array(pro_dist).mean()
 
-        # def _procrustes_tForm(self):
-        """
-        Returns the rotation angle from orthogonal_procrustes
-        """
-        shape = self.y_true.shape
-        pro_rotate = []
-        for i in range(shape[0]):
-            d, Z, tForm = procrustes(
-                self.y_pred[i, :, :],
-                self.y_true[i, :, :],
-                scaling=False,
-                reflection=False,
-            )
-            pro_rotate.append(self._angle_from_rot_matrix(tForm["rotation"]))
-        return np.array(pro_rotate).mean()
-
     def _orthog_procrustes(self):
         shape = self.y_true.shape
         pro_rotate = []
@@ -135,7 +118,7 @@ class EvaluateRegression(object):
         """
         Returns the rotation angle from scipy Rotation.align_vectors.
         Uses the Kabsch algorithm to find the rotation matrix that aligns the
-        predicted points to the ground truth points.
+        predicted points to the ground truth points. Same output as _orthog_procrustes().
         """
         shape = self.y_true.shape
         rotations = []
@@ -349,8 +332,9 @@ def evaluate_segmentation(model_name):
 
 
 def main():
-    model_name_reg = "dsnt_regression_20240215"
-    model_name_seg = "unet_segmentation_20240208"
+    # model_name_reg = "{PyTorch_pth_state_dictionary_name}"
+    # model_name_seg = "{PyTorch_pth_state_dictionary_name}"
+    # example: model_name_reg = "model_name" corresponding to "model_name.pth"
 
     # Regression
     evaluate_regression(model_name_reg)
