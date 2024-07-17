@@ -8,17 +8,15 @@ This repository contains supplementary code for the paper
 
 
 ## Abstract
-Early detection of mitral valve (MV) structural complications is a crucial clinical need. Key advances in deep learning-based
-segmentation have not yet been leveraged for MV detection in cardiac
-magnetic resonance imaging (CMR), a promising opportunity towards
-assisted MV disease diagnostics. To address this gap, we introduce Deep-
-Valve, an automated pipeline for MV detection using CMR. DeepValve
-builds on existing approaches by comparing known methodologies (U-
-Net architectures, fine-tuned for regression and segmentation analysis:
-UNET-REG and UNET-SEG) and introducing a novel hybrid model
-(DSNT-REG), adapted from a recent automatic segmentation study in
-echocardiography. We propose metrics tailored for quality assessment of
-predicted thin structures based on Procrustes analysis.
+Mitral valve disease is one of the most prevalent valvular heart disorders, increasingly contributing to global cardiovascular morbidity and mortality. Evaluating mitral valve (MV) leaflets through medical imaging is essential to diagnose valvular pathology. 
+In this regard, cardiac magnetic resonance (CMR) has emerged as a superior diagnostic tool, addressing the limitations of other imaging modalities. 
+Automated detection of the MV leaflets could significantly enhance clinical workflows by providing rapid and accurate assessments. However, the application of advanced deep learning (DL) techniques for detecting the MV from CMR is not yet established.
+
+To address this gap, we introduce DeepValve, the first proof-of-concept DL pipeline for MV detection using CMR. Within DeepValve, we tested three valve detection models: a keypoint-regression model (UNET-REG), a segmentation model (UNET-SEG) and a hybrid model based on keypoint detection (DSNT-REG). We also propose novel metrics tailored for evaluating the quality of MV detection, including Procrustes metrics (PRA, PD) for the regression models and customized Dice-based metrics (Dilated Dice, Centerline Dice) for segmentation models. We developed and tested our models on a clinical dataset comprising 120 CMR scans from patients with mitral valve prolapse and mitral annular disjunction. 
+
+Our results show that DSNT-REG achieved the best regression performance with RMSE, PRA, and PD values of 6.54, 3.17, and 0.18 mm, respectively. Additionally, the segmentation model achieved Dice, Dilated Dice, and Centerline Dice scores of 0.70, 0.77, and 0.81, respectively.
+
+Overall, our work represents a critical first step towards automated MV assessment using DL in CMR and paving the way for improved diagnostic and prognostic capabilities in clinical settings.
 
 ## Our pipeline and examples of predictions from our models
 
