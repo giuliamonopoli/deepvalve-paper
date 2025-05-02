@@ -4,7 +4,7 @@
 This repository contains supplementary code for the paper
 > Giulia Monopoli et al.
 > DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging.\
-> Published to *Computers in biology and medicine*, June 2024.
+> Published in *Computers in biology and medicine*, June 2024.
 
 
 ## Abstract
