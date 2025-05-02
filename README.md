@@ -4,7 +4,7 @@
 This repository contains supplementary code for the paper
 > Giulia Monopoli et al.
 > DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging.\
-> Submitted to *Medical Image Analysis*, 2024.
+> Published to *Computers in biology and medicine*, June 2024.
 
 
 ## Abstract
@@ -62,6 +62,10 @@ python3 code/evaluate_models.py
 
 That will generate .txt files with the appropriate evaluation metrics of the trained models to the unseen data.
 and plot those predictions.
+Customised dice scores can be obtained running
+```sh
+python3 code/dice_customised.py
+```
 
 
 ## Having issues
