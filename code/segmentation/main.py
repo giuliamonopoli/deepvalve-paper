@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import segmentation_models_pytorch.utils as smp_utils
 
-import config as config_file
+import code.segmentation.config_seg as config_file
 import utils
 
 warnings.filterwarnings("ignore")

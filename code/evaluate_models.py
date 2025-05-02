@@ -173,7 +173,7 @@ class EvaluateSegmentation(object):
         Iterative Closest Point (ICP) algorithm to find the best transformation matrix
         that maps the predicted points to the ground truth points. Returns the final error.
         """
-        # TODO: Convert mask to coordinates
+       
         y_pred_coords = np.argwhere(self.y_pred)
         y_true_coords = np.argwhere(self.y_true)
         T, finalA, final_error, i = iterative_closest_point(
@@ -332,8 +332,8 @@ def evaluate_segmentation(model_name):
 
 
 def main():
-    # model_name_reg = "{PyTorch_pth_state_dictionary_name}"
-    # model_name_seg = "{PyTorch_pth_state_dictionary_name}"
+    model_name_reg = "{PyTorch_pth_state_dictionary_name}"
+    model_name_seg = "{PyTorch_pth_state_dictionary_name}"
     # example: model_name_reg = "model_name" corresponding to "model_name.pth"
 
     # Regression

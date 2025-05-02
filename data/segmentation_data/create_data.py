@@ -5,11 +5,12 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'code'))
 
 # Append the "code/segmentation" directory
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'code', 'segmentation'))
+# sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'code', 'segmentation'))
 
 
 import argparse
 
+# import config_seg as cfg_seg
 import config as cfg
 import data_loader as dl
 

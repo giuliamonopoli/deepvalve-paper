@@ -5,7 +5,7 @@ import pandas as pd
 import torch
 from torch.utils.data import ConcatDataset, DataLoader
 
-import config
+import code.segmentation.config_seg as config_seg
 
 
 def visualize(**images):
