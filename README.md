@@ -8,15 +8,14 @@ This repository contains supplementary code for the paper
 
 
 ## Abstract
-Mitral valve disease is one of the most prevalent valvular heart disorders, increasingly contributing to global cardiovascular morbidity and mortality. Evaluating mitral valve (MV) leaflets through medical imaging is essential to diagnose valvular pathology. 
-In this regard, cardiac magnetic resonance (CMR) has emerged as a superior diagnostic tool, addressing the limitations of other imaging modalities. 
-Automated detection of the MV leaflets could significantly enhance clinical workflows by providing rapid and accurate assessments. However, the application of advanced deep learning (DL) techniques for detecting the MV from CMR is not yet established.
+Mitral valve (MV) assessment is key to diagnosing valvular disease and to addressing serious downstream complications.
+Cardiac magnetic resonance (CMR) has become an essential diagnostic tool in MV disease, offering detailed views of the valve structure and function, while also overcoming the limitations of other imaging modalities. Automated detection of the MV leaflets in CMR  could enable rapid and precise assessments that enhance diagnostic accuracy,  yet this has not been accomplished.
 
-To address this gap, we introduce DeepValve, the first proof-of-concept DL pipeline for MV detection using CMR. Within DeepValve, we tested three valve detection models: a keypoint-regression model (UNET-REG), a segmentation model (UNET-SEG) and a hybrid model based on keypoint detection (DSNT-REG). We also propose novel metrics tailored for evaluating the quality of MV detection, including Procrustes metrics (PRA, PD) for the regression models and customized Dice-based metrics (Dilated Dice, Centerline Dice) for segmentation models. We developed and tested our models on a clinical dataset comprising 120 CMR scans from patients with mitral valve prolapse and mitral annular disjunction. 
+To address this gap, we introduce DeepValve, the first  deep learning  (DL) pipeline for MV detection using CMR. Within DeepValve, we tested three valve detection models: a keypoint-regression model (UNET-REG), a segmentation model (UNET-SEG) and a hybrid model based on keypoint detection (DSNT-REG). We also propose  metrics, newly tailored, for evaluating the quality of MV detection, including Procrustes-based metrics  for the regression models and customized Dice-based metrics for segmentation models. We developed and tested our models on a clinical dataset comprising 120 CMR images from patients with confirmed MV disease (mitral valve prolapse and mitral annular disjunction). 
 
-Our results show that DSNT-REG achieved the best regression performance with RMSE, PRA, and PD values of 6.54, 3.17, and 0.18 mm, respectively. Additionally, the segmentation model achieved Dice, Dilated Dice, and Centerline Dice scores of 0.70, 0.77, and 0.81, respectively.
-
-Overall, our work represents a critical first step towards automated MV assessment using DL in CMR and paving the way for improved diagnostic and prognostic capabilities in clinical settings.
+Our results show that DSNT-REG delivered the best regression performance as reflected in traditional and newly-applied metrics, accurately approximating landmarks locations and precisely determining their spatial orientation. 
+UNET-SEG achieved satisfactory Dice and customized Dice scores, reflecting the segmentation's model's ability to accurately predict valve location and topology.
+Overall, our work represents a critical first step towards automated MV assessment using DL in CMR and paving the way for improved clinical assessment in MV disease.
 
 ## Our pipeline and examples of predictions from our models
 
