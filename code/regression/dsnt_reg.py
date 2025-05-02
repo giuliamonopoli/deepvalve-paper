@@ -42,8 +42,6 @@ class Up(nn.Module):
 
     def __init__(self, in_channels, out_channels, bilinear=True):
         super().__init__()
-
-        # if bilinear, use the normal convolutions to reduce the number of channels
         if bilinear:
             self.conv = DoubleConv(in_channels, out_channels, in_channels // 2)
         else:
@@ -54,7 +52,6 @@ class Up(nn.Module):
 
     def forward(self, x1, x2):
         x1 = self.up(x1)
-        # input is CHW
         diffY = x2.size()[2] - x1.size()[2]
         diffX = x2.size()[3] - x1.size()[3]
 
@@ -64,9 +61,9 @@ class Up(nn.Module):
         return self.conv(x)
 
 
-class UNetDNST(nn.Module):
+class UNetDSNT(nn.Module):
     def __init__(self, n_channels=1, bilinear=False):
-        super(UNetDNST, self).__init__()
+        super(UNetDSNT, self).__init__()
         self.n_channels = n_channels
 
         self.bilinear = bilinear
@@ -85,14 +82,12 @@ class UNetDNST(nn.Module):
 
     @staticmethod
     def spatial_to_coordinates(inputs):
-        # print("inputs shape",inputs.shape)
         device = inputs.device
         px_range = torch.arange(1, 449, dtype=torch.float32, device=device) / 448.0
         py_range = torch.arange(1, 449, dtype=torch.float32, device=device) / 448.0
         x, y = torch.meshgrid(px_range, py_range)
         x = inputs * x[None, ...]
         y = inputs * y[None, ...]
-        # Sum along the last two dimensions to obtain the final tensor with shape [8, 20]
         x = x.sum(dim=(-2, -1))
         y = y.sum(dim=(-2, -1))
 

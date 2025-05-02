@@ -64,24 +64,6 @@ def print_and_return_results(since, model, epoch_loss, best_model_path, best_los
     return model, epoch_loss, best_model, best_loss
 
 
-def dsnt_custom(coords, target_var, heatmaps):
-    """
-    Computes a custom loss for a set of predicted coordinates against target variables using
-    DSNT (Differentiable Spatial to Numerical Transform) operations.
-
-    Parameters:
-    - coords (Tensor): The predicted coordinates tensor where each pair represents the x and y coordinates for a point.
-    - target_var (Tensor): The target coordinates tensor matching the predicted coordinates' layout.
-    - heatmaps (Tensor): The predicted heatmaps tensor of shape representing the spatial distribution of points.
-
-    Returns:
-    - loss (Tensor): A scalar tensor representing the combined average loss computed as the sum
-                     of Euclidean distance losses and regularization losses across a batch.
-    """
-    euc_losses = dsntnn.euclidean_losses(coords, target_var)
-    reg_losses = dsntnn.js_reg_losses(heatmaps, target_var, sigma_t=1.0)
-    loss = dsntnn.average_loss(euc_losses + reg_losses)
-    return loss
 
 
 def train(dataloaders, model, criterion, optimizer, scheduler, device, config):
@@ -239,8 +221,7 @@ def select_criterion(config):
         criterion = nn.HuberLoss()
     elif config.loss == "rmse":
         criterion = utils.RMSELoss()
-    elif config.loss == "dsnt":
-        criterion = dsnt_custom
+ 
     else:
         raise ValueError(f"Loss function {config.loss} not implemented")
     return criterion
@@ -295,19 +276,19 @@ def configure_settings(run):
     config = run.config
     config.update(
         dict(
-            learning_rate=0.054,
+            learning_rate=0.001,
             epochs=2000,
             patience=1000,
-            batch_size_train=10,
-            batch_size_val_test=10,
-            gamma=0.45,
-            augment_prop=2,
+            batch_size_train=8,
+            batch_size_val_test=8,
+            gamma=0.9,
+            augment_prop=3,
             schedule=(
                 "CyclicLR"  # "StepLR" # "CosineAnnealingLR" # "WarmRestart" # "CyclicLR"
             ),
-            loss="huber",  # "customMSE"  # "MSE" # "huber" "rmse"
+            loss="customMSE",  # "customMSE"  # "MSE" # "huber" "rmse"
             rotation=1,  # rotate or not the images in augmentation
-            crop_prob=0.75,  # crop or not the images in augmentation
+            crop_prob=0.5,  # crop or not the images in augmentation
             normalize_keypts=True,  # whether to normalize the annotations between 0 and 1 using min-max normalization
             loss_penalty_factor=1.016,  # factor to multiply the loss by for the custom loss function. If 1.0, the loss is the same as MSE
             com_factor=0.025,  # factor to multiply the loss by for the center of mass loss. If 0.0, the loss is the same as MSE
