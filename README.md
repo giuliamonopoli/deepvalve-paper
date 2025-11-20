@@ -40,7 +40,7 @@ git clone https://github.com/giuliamonopoli/deepvalve-paper.git
 
 This repository is based on a pre-defined input data structure. Our dataloader object, for example, requires coordinate annotations (for regression task ground truths) or a set of 2D masks (for segmentation task ground truths).
 
-Given annotations are provided, and correct configurations such as mask width and number of points are correctly set at [segmentation utils](/data/segmentation_data/utils.py) in the data directory, one can create the masks by running 
+Given annotations are provided, and correct configurations such as mask width and number of points are correctly set at `segmentation utils` in the data directory, one can create the masks by running 
 
 ```sh
 python3 data/segmentation_data/create_data.py
@@ -48,7 +48,7 @@ python3 data/segmentation_data/create_data.py
 
 ### Training
 
-For clear instructions on how to run the models, we refer to the [code directory readme](/code/README.md).
+For clear instructions on how to run the models, we refer to the `code directory readme`.
 
 
 ### Evaluations

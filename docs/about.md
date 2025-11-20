@@ -1,6 +1,6 @@
 # About
 
-Here we explain what the paper is about. See {cite}`example` for more info
+Here we explain what the paper is about. See {cite}`MONOPOLI2025110211` for more info
 
 
 ## References

@@ -1,7 +1,7 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: Supplementary code for the paper: DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging
+title: "Supplementary code for the paper: DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging"
 author: Giulia Monopoli
 logo: "docs/logo.png"
 copyright: "2024"
@@ -47,4 +47,4 @@ sphinx:
             - jupytext.reads
             - fmt: py
 
-exclude_patterns: [".pytest_cache/*", ".github/*"]
+exclude_patterns: [".pytest_cache/*", ".github/*", ".venv/*", "env/*", "build/*", "dist/*", "__pycache__/*"]
