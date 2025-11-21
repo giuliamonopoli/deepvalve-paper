@@ -65,10 +65,7 @@ Customised dice scores can be obtained running
 ```sh
 python3 code/dice_customised.py
 ```
-### Uncertainty quantification in models' predcitions
-```sh
-python3 code/uq_dsnt.py or code/uq_seg.py
-```
+
 
 ## Having issues
 If you have any troubles please file and issue in the GitHub repository.
