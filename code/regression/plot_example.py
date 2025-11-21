@@ -15,12 +15,14 @@ model.load_state_dict(
     torch.load(
         "/path/to/your/best_model.pth",
         map_location=torch.device("cpu"),
-    )
+    ),
 )
 model.eval()
 
 dataloaders = utils.load_and_process_data(
-    batch_size_train=8, batch_size_val_test=8, num_workers=0
+    batch_size_train=8,
+    batch_size_val_test=8,
+    num_workers=0,
 )
 
 inputs_lst = []

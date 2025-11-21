@@ -90,7 +90,7 @@ class PreprocessDataset:
         """
 
         max_width = 448  # arbitrary value due to pretrained nets
-        max_height = 448 
+        max_height = 448
 
         for annotation_data in annotation_data_list:
             for frame in annotation_data["annotations"]:
@@ -103,7 +103,7 @@ class PreprocessDataset:
 
                     # translation scalling (the one done in cv2.resize)
                     for i, annot in enumerate(
-                        annotation_data["annotations"][frame][key]
+                        annotation_data["annotations"][frame][key],
                     ):
                         # zoom scalling
                         annotation_data["annotations"][frame][key][i][1] = (
@@ -115,10 +115,10 @@ class PreprocessDataset:
 
                         # scale scalling
                         annotation_data["annotations"][frame][key][i][1] = int(
-                            annotation_data["annotations"][frame][key][i][1] * scale_x
+                            annotation_data["annotations"][frame][key][i][1] * scale_x,
                         )  # x
                         annotation_data["annotations"][frame][key][i][2] = int(
-                            annotation_data["annotations"][frame][key][i][2] * scale_y
+                            annotation_data["annotations"][frame][key][i][2] * scale_y,
                         )  # y
 
                         # normalize scalling
@@ -150,18 +150,21 @@ class PreprocessDataset:
                         [
                             sublist[1:]
                             for sublist in annotation_data["annotations"][frame][key]
-                        ]
+                        ],
                     )
 
                     if "leaflet" in key:
                         annotation_data["annotations"][frame][key] = ut.get_spline_pts(
-                            annotation_data["annotations"][frame][key], 10
+                            annotation_data["annotations"][frame][key],
+                            10,
                         )  # 10 points per spline
 
         return annotation_data_list
 
     def get_patient_data_list(
-        self, patient_names: List[str], data_list: List[PatientData]
+        self,
+        patient_names: List[str],
+        data_list: List[PatientData],
     ) -> List[PatientData]:
         return [
             patient_data
@@ -170,10 +173,10 @@ class PreprocessDataset:
         ]
 
     def load_dataset(self, normalize_keypts=True):
-
         json_data = self.get_annotation_json()
         json_data = self.rescale_annotations(
-            json_data, normalize_keypts=normalize_keypts
+            json_data,
+            normalize_keypts=normalize_keypts,
         )
         json_data = self.standardize_annotations(json_data)
         patient_data = [PatientData(**json_data[i]) for i, _ in enumerate(json_data)]
@@ -194,13 +197,15 @@ class PreprocessDataset:
             max_height = 448
 
             for structure_folder in os.listdir(
-                os.path.join(raw_imgs_path, patient.patient_name[:-2])
+                os.path.join(raw_imgs_path, patient.patient_name[:-2]),
             ):
                 if structure_folder.startswith("LA"):
                     for file in os.listdir(
                         os.path.join(
-                            raw_imgs_path, patient.patient_name[:-2], structure_folder
-                        )
+                            raw_imgs_path,
+                            patient.patient_name[:-2],
+                            structure_folder,
+                        ),
                     ):
                         file_frame = file.split("_")[1].split(".")[0]
 
@@ -213,7 +218,7 @@ class PreprocessDataset:
                                     patient.patient_name[:-2],
                                     structure_folder,
                                     file,
-                                )
+                                ),
                             )
                             array_img = sitk.GetArrayFromImage(itkimage)
                             cropped_img = array_img[
@@ -228,7 +233,7 @@ class PreprocessDataset:
 
                             lst_of_matrix_imgs.append(resized_img)
                             lst_of_annotation_imgs.append(
-                                patient.annotations[file_frame]
+                                patient.annotations[file_frame],
                             )
                             lst_of_patient_names.append(patient.patient_name)
 
@@ -261,15 +266,18 @@ class DeepValveDataset(Dataset):
         # Select the appropriate dataset based on the mode
         if mode == "train":
             self.patient_data_list = preprocess.get_patient_data_list(
-                X_train, patient_data
+                X_train,
+                patient_data,
             )
         elif mode == "val":
             self.patient_data_list = preprocess.get_patient_data_list(
-                X_val, patient_data
+                X_val,
+                patient_data,
             )
         else:  # mode == "test"
             self.patient_data_list = preprocess.get_patient_data_list(
-                X_test, patient_data
+                X_test,
+                patient_data,
             )
 
         # Extract images, annotations, and patient names
@@ -304,7 +312,10 @@ class DeepValveDataset(Dataset):
 
 class DataSplitter:
     def __init__(
-        self, file_path=config.data_frame_path, test_size=0.25, random_state=47
+        self,
+        file_path=config.data_frame_path,
+        test_size=0.25,
+        random_state=47,
     ):
         self.file_path = file_path
         self.test_size = test_size
@@ -377,7 +388,6 @@ class DataSplitter:
         return X_train, X_test, y_train, y_test
 
     def process_and_split_data(self, test_size=0.25, random_state=47):
-
         patient_names, flags_list = self.load_data()
         filtered_classes, one_class = self.get_combinations_counts(flags_list)
         return self.split_data(
@@ -407,12 +417,21 @@ class DataSplitter:
 
 
 def get_data_loader(
-    mode="train", batch_size=4, transform=None, normalize_keypts=True, num_workers=8
+    mode="train",
+    batch_size=4,
+    transform=None,
+    normalize_keypts=True,
+    num_workers=8,
 ):
     dataset = DeepValveDataset(
-        mode=mode, transform=transform, normalize_keypts=normalize_keypts
+        mode=mode,
+        transform=transform,
+        normalize_keypts=normalize_keypts,
     )
     shuffle = mode == "train"
     return DataLoader(
-        dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers
+        dataset,
+        batch_size=batch_size,
+        shuffle=shuffle,
+        num_workers=num_workers,
     )

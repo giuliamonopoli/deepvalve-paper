@@ -2,7 +2,7 @@ import sys
 import os
 
 # Append the "code" directory
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'code'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "code"))
 
 # Append the "code/segmentation" directory
 # sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'code', 'segmentation'))
@@ -23,27 +23,36 @@ def main(
     no_of_points=cfg.no_of_points,
     mask_thickness=cfg.mask_thickness,
 ):
-
     training_loader = dl.get_data_loader(
-        mode="train", batch_size=8, num_workers=8, normalize_keypts=False
+        mode="train",
+        batch_size=8,
+        num_workers=8,
+        normalize_keypts=False,
     )
     val_loader = dl.get_data_loader(
-        mode="val", batch_size=8, num_workers=8, normalize_keypts=False
+        mode="val",
+        batch_size=8,
+        num_workers=8,
+        normalize_keypts=False,
     )
     testing_loader = dl.get_data_loader(
-        mode="test", batch_size=8, num_workers=8, normalize_keypts=False
+        mode="test",
+        batch_size=8,
+        num_workers=8,
+        normalize_keypts=False,
     )
 
     if mask_generation_method == "polygon":
-
         if no_of_points is None:
             no_of_points = cfg.no_of_points
         train, val, test = utils.create_dataloaders_with_masks_polygons(
-            training_loader, val_loader, testing_loader, no_of_points=cfg.no_of_points
+            training_loader,
+            val_loader,
+            testing_loader,
+            no_of_points=cfg.no_of_points,
         )
 
     else:
-
         if no_of_points is None:
             no_of_points = cfg.no_of_points
         if mask_thickness is None:
@@ -66,7 +75,6 @@ def main(
 
 
 if __name__ == "__main__":
-
     main()
     # parser = argparse.ArgumentParser(description='Process some integers.')
     # parser.add_argument('--mask_generation_method', type=str, help='mask generation method', default='polygon')

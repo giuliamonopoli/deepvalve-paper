@@ -10,7 +10,9 @@ from PIL import Image, ImageDraw
 from scipy.interpolate import splev, splprep
 from torch.utils.data import ConcatDataset, DataLoader, Dataset
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'code', 'segmentation'))
+sys.path.append(
+    os.path.join(os.path.dirname(__file__), "..", "..", "code", "segmentation")
+)
 import config
 
 
@@ -87,7 +89,8 @@ def create_mask_line(image, annotation, no_of_points=40, thickness=2):
 
     coordinates_septal = get_spline_pts(annotation.get("leaflet_septal"), no_of_points)
     coordinates_lateral = get_spline_pts(
-        annotation.get("leaflet_lateral"), no_of_points
+        annotation.get("leaflet_lateral"),
+        no_of_points,
     )
 
     # Convert floating-point coordinates to integers
@@ -146,7 +149,10 @@ class ImageMaskDataset(Dataset):
 
 
 def create_dataloaders_with_masks_polygons(
-    training_loader, val_loader, testing_loader, no_of_points
+    training_loader,
+    val_loader,
+    testing_loader,
+    no_of_points,
 ):
     """Creates dataloaders with masks for training, validation, and testing.
 
@@ -163,19 +169,22 @@ def create_dataloaders_with_masks_polygons(
     masks_testing = []
 
     for image, dictionary in zip(
-        training_loader.dataset.images, training_loader.dataset.landmarks
+        training_loader.dataset.images,
+        training_loader.dataset.landmarks,
     ):
         mask = create_mask_polygon(image, dictionary, no_of_points)
         masks_training.append(mask)
 
     for image, dictionary in zip(
-        val_loader.dataset.images, val_loader.dataset.landmarks
+        val_loader.dataset.images,
+        val_loader.dataset.landmarks,
     ):
         mask = create_mask_polygon(image, dictionary, no_of_points)
         masks_val.append(mask)
 
     for image, dictionary in zip(
-        testing_loader.dataset.images, testing_loader.dataset.landmarks
+        testing_loader.dataset.images,
+        testing_loader.dataset.landmarks,
     ):
         mask = create_mask_polygon(image, dictionary, no_of_points)
         masks_testing.append(mask)
@@ -188,7 +197,11 @@ def create_dataloaders_with_masks_polygons(
 
 
 def create_dataloaders_with_masks_line(
-    training_loader, val_loader, testing_loader, no_of_points=10, mask_thickness=2
+    training_loader,
+    val_loader,
+    testing_loader,
+    no_of_points=10,
+    mask_thickness=2,
 ):
     """Creates dataloaders with masks for training, validation, and testing.
 
@@ -205,19 +218,22 @@ def create_dataloaders_with_masks_line(
     masks_testing = []
 
     for image, dictionary in zip(
-        training_loader.dataset.images, training_loader.dataset.landmarks
+        training_loader.dataset.images,
+        training_loader.dataset.landmarks,
     ):
         mask = create_mask_line(image, dictionary, no_of_points, mask_thickness)
         masks_training.append(mask)
 
     for image, dictionary in zip(
-        val_loader.dataset.images, val_loader.dataset.landmarks
+        val_loader.dataset.images,
+        val_loader.dataset.landmarks,
     ):
         mask = create_mask_line(image, dictionary, no_of_points, mask_thickness)
         masks_val.append(mask)
 
     for image, dictionary in zip(
-        testing_loader.dataset.images, testing_loader.dataset.landmarks
+        testing_loader.dataset.images,
+        testing_loader.dataset.landmarks,
     ):
         mask = create_mask_line(image, dictionary, no_of_points, mask_thickness)
         masks_testing.append(mask)
@@ -261,7 +277,11 @@ def save_images_masks(dataset, data_type, mask_type, folder_path):
 
 
 def save_images_and_masks_in_folders(
-    train_loader, val_loader, test_loader, mask_type, base_folder_path="../"
+    train_loader,
+    val_loader,
+    test_loader,
+    mask_type,
+    base_folder_path="../",
 ):
     # Save images and masks for train
     save_images_masks(train_loader, "train", mask_type, base_folder_path)

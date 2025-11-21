@@ -20,7 +20,9 @@ from torch.optim import lr_scheduler
 
 
 if not os.environ.get("PYTHONHTTPSVERIFY", "") and getattr(
-    ssl, "_create_unverified_context", None
+    ssl,
+    "_create_unverified_context",
+    None,
 ):
     ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -64,8 +66,6 @@ def print_and_return_results(since, model, epoch_loss, best_model_path, best_los
     return model, epoch_loss, best_model, best_loss
 
 
-
-
 def train(dataloaders, model, criterion, optimizer, scheduler, device, config):
     """
     Trains a given model with provided data, optimizer, and learning rate scheduler.
@@ -97,7 +97,6 @@ def train(dataloaders, model, criterion, optimizer, scheduler, device, config):
         )
 
         for epoch in range(config.epochs):
-
             # log current learning rate
             for param_group in optimizer.param_groups:
                 current_lr = param_group["lr"]
@@ -125,7 +124,8 @@ def train(dataloaders, model, criterion, optimizer, scheduler, device, config):
                     labels_septal = data["landmarks"]["leaflet_septal"]
                     leaflet_lateral = data["landmarks"]["leaflet_lateral"]
                     labels = torch.cat((labels_septal, leaflet_lateral), dim=1).to(
-                        device, dtype=torch.float32
+                        device,
+                        dtype=torch.float32,
                     )
 
                     optimizer.zero_grad()
@@ -169,11 +169,19 @@ def train(dataloaders, model, criterion, optimizer, scheduler, device, config):
                 # Early stopping
                 if no_improvement_count >= config.patience:
                     return print_and_return_results(
-                        since, model, epoch_loss, best_model_path, best_loss
+                        since,
+                        model,
+                        epoch_loss,
+                        best_model_path,
+                        best_loss,
                     )
 
         return print_and_return_results(
-            since, model, epoch_loss, best_model_path, best_loss
+            since,
+            model,
+            epoch_loss,
+            best_model_path,
+            best_loss,
         )
 
 
@@ -215,20 +223,20 @@ def select_criterion(config):
         criterion = nn.MSELoss()
     elif config.loss == "customMSE":
         criterion = utils.CustomMSELoss(
-            loss_penalty_factor=config.loss_penalty_factor, com_factor=config.com_factor
+            loss_penalty_factor=config.loss_penalty_factor,
+            com_factor=config.com_factor,
         )
     elif config.loss == "huber":
         criterion = nn.HuberLoss()
     elif config.loss == "rmse":
         criterion = utils.RMSELoss()
- 
+
     else:
         raise ValueError(f"Loss function {config.loss} not implemented")
     return criterion
 
 
 def configure_scheduler(optimizer, config):
-
     if config.schedule == "CyclicLR":
         scheduler = torch.optim.lr_scheduler.CyclicLR(
             optimizer,
@@ -242,16 +250,23 @@ def configure_scheduler(optimizer, config):
         )
     elif config.schedule == "CosineAnnealingLR":
         scheduler = lr_scheduler.CosineAnnealingLR(
-            optimizer, T_max=config.epochs, eta_min=0.0
+            optimizer,
+            T_max=config.epochs,
+            eta_min=0.0,
         )
     elif config.schedule == "WarmRestart":
         scheduler = lr_scheduler.CosineAnnealingWarmRestarts(
-            optimizer, T_0=int(0.1 * config.epochs), T_mult=1, eta_min=0.0
+            optimizer,
+            T_0=int(0.1 * config.epochs),
+            T_mult=1,
+            eta_min=0.0,
         )
     elif config.schedule == "StepLR":
         scheduler = (
             lr_scheduler.StepLR(
-                optimizer, step_size=int(0.15 * config.epochs), gamma=config.gamma
+                optimizer,
+                step_size=int(0.15 * config.epochs),
+                gamma=config.gamma,
             )
             if config.gamma
             else None
@@ -293,13 +308,13 @@ def configure_settings(run):
             loss_penalty_factor=1.016,  # factor to multiply the loss by for the custom loss function. If 1.0, the loss is the same as MSE
             com_factor=0.025,  # factor to multiply the loss by for the center of mass loss. If 0.0, the loss is the same as MSE
             use_wandb=False if run is None else True,
-        )
+        ),
     )
 
 
 def main():
     utils.set_seed(42)
-    use_wandb = False # Set to True to use Weights and Biases
+    use_wandb = False  # Set to True to use Weights and Biases
     # Initialize wandb
     if use_wandb:
         run = wandb.init(project="Your_project", entity="Your_entity", reinit=True)
@@ -308,14 +323,13 @@ def main():
 
     seed = 42
     config = configure_settings(run)
-    
+
     if use_wandb:
-        run_name = wandb.run.name 
+        run_name = wandb.run.name
     else:
         run_name = "Your_run_name"
 
     run_name += f"{config.loss}"
-
 
     print(f"#### Run name: {run_name}")
 
@@ -344,7 +358,13 @@ def main():
     scheduler = configure_scheduler(optimizer, config)
 
     last_model, last_loss, best_model, best_loss = train(
-        dataloaders, model, criterion, optimizer, scheduler, device, config
+        dataloaders,
+        model,
+        criterion,
+        optimizer,
+        scheduler,
+        device,
+        config,
     )
 
     if use_wandb:

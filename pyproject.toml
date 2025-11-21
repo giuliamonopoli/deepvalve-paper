@@ -8,7 +8,7 @@ version = "0.1.0"
 authors = [{name = "Giulia Monopoli", email = "giulia@simula.no"}]
 license = {file = "LICENSE"}
 readme = "README.md"
-requires-python = ">=3.10.4" 
+requires-python = ">=3.10.4"
 # Generate requirements.txt using
 # pip-compile --output-file=requirements.txt pyproject.toml
 dependencies = [

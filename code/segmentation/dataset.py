@@ -13,7 +13,9 @@ def crop_image(image, mask):
 
     # Find contours of the mask
     contours, _ = cv2.findContours(
-        gray_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+        gray_mask,
+        cv2.RETR_EXTERNAL,
+        cv2.CHAIN_APPROX_SIMPLE,
     )
 
     # Get bounding box of the mask
@@ -75,7 +77,7 @@ class heartdataset(torch.utils.data.Dataset):
                 [
                     A.Resize(resized_crop_size, resized_crop_size),
                     A.RandomCrop(self.crop_size, self.crop_size),
-                ]
+                ],
             )
 
             sample = resized_crop_transforms(image=cropped_image, mask=cropped_mask)

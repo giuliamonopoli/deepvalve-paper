@@ -3,6 +3,7 @@
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
 
+
 def best_fit_transform(A, B):
     """
     Calculates the best-fit transform that maps points A onto points B.

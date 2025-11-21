@@ -173,7 +173,7 @@ class EvaluateSegmentation(object):
         Iterative Closest Point (ICP) algorithm to find the best transformation matrix
         that maps the predicted points to the ground truth points. Returns the final error.
         """
-       
+
         y_pred_coords = np.argwhere(self.y_pred)
         y_true_coords = np.argwhere(self.y_true)
         T, finalA, final_error, i = iterative_closest_point(

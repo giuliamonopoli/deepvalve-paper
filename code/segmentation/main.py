@@ -23,7 +23,9 @@ from dataset import heartdataset
 
 # disable default certificate verification
 if not os.environ.get("PYTHONHTTPSVERIFY", "") and getattr(
-    ssl, "_create_unverified_context", None
+    ssl,
+    "_create_unverified_context",
+    None,
 ):
     ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -61,7 +63,6 @@ CLASSES = class_names
 
 
 def build_model(config):
-
     # create segmentation model with pretrained encoder
     model = smp.Unet(
         encoder_name=config.encoder,
@@ -108,11 +109,16 @@ def train(optimizer, config, train_loader, valid_loader, model, loss, metrics, d
         )
     elif config.scheduler_mode == "CosineAnnealingLR":
         scheduler = lr_scheduler.CosineAnnealingLR(
-            optimizer, T_max=config.epochs, eta_min=0.0
+            optimizer,
+            T_max=config.epochs,
+            eta_min=0.0,
         )
     elif config.scheduler_mode == "WarmRestart":
         scheduler = lr_scheduler.CosineAnnealingWarmRestarts(
-            optimizer, T_0=int(0.1 * config.epochs), T_mult=1, eta_min=0.0
+            optimizer,
+            T_0=int(0.1 * config.epochs),
+            T_mult=1,
+            eta_min=0.0,
         )
 
     elif config.scheduler_mode == "StepLR":
@@ -163,7 +169,7 @@ def train(optimizer, config, train_loader, valid_loader, model, loss, metrics, d
             # Check for early stopping condition
             if no_improvement_count >= config.patience:
                 print(
-                    f"EarlyStopping: No improvement in validation IoU score for the last {no_improvement_count} epochs."
+                    f"EarlyStopping: No improvement in validation IoU score for the last {no_improvement_count} epochs.",
                 )
                 break
 
@@ -174,7 +180,6 @@ def train(optimizer, config, train_loader, valid_loader, model, loss, metrics, d
 
 
 def get_loaders(config, preprocessing_fn):
-
     # Define the datasets
     train_dataset_original = heartdataset(
         x_train_dir,
@@ -200,7 +205,7 @@ def get_loaders(config, preprocessing_fn):
             augmentation_fns = utils.get_augmentation_by_value(config.augmentation)
         else:
             raise ValueError(
-                "Invalid augmentation value. Must be an integer or a list of integers."
+                "Invalid augmentation value. Must be an integer or a list of integers.",
             )
 
         datasets = []
@@ -281,7 +286,7 @@ def main():
     config.lr_scheduler_gamma = config_file.lr_scheduler_gamma
 
     loss = smp_utils.losses.DiceLoss(
-        ignore_channels=[0]
+        ignore_channels=[0],
     )  # BCEWithLogitsLoss(ignore_channels=[0])# config_file.loss
     metrics = [smp_utils.metrics.IoU(threshold=config.IOU_threshold)]
 
@@ -289,7 +294,8 @@ def main():
 
     wandb.watch(model)
     preprocessing_fn = smp.encoders.get_preprocessing_fn(
-        config.encoder, config.encoder_weights
+        config.encoder,
+        config.encoder_weights,
     )
 
     # define optimizer
@@ -299,8 +305,8 @@ def main():
                 params=model.parameters(),
                 lr=config.lr,
                 weight_decay=config.weight_decay,
-            )
-        ]
+            ),
+        ],
     )
 
     train_loader, valid_loader = get_loaders(config, preprocessing_fn)

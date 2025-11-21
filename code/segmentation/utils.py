@@ -90,7 +90,10 @@ def get_training_augmentation_1():
         album.HorizontalFlip(p=0.5),
         album.RandomCrop(100, 100, p=1),
         album.PadIfNeeded(
-            min_height=448, min_width=448, always_apply=True, border_mode=0
+            min_height=448,
+            min_width=448,
+            always_apply=True,
+            border_mode=0,
         ),
     ]
     return album.Compose(train_transform)
@@ -107,7 +110,10 @@ def get_training_augmentation_2():
         album.RandomGamma(p=0.3),
         album.VerticalFlip(p=0.7),
         album.PadIfNeeded(
-            min_height=448, min_width=448, always_apply=True, border_mode=2
+            min_height=448,
+            min_width=448,
+            always_apply=True,
+            border_mode=2,
         ),
     ]
     return album.Compose(train_transform)
@@ -124,7 +130,10 @@ def get_training_augmentation_3():
         album.Rotate(limit=(-90, 90), p=0.9),
         album.CenterCrop(100, 100, p=0.9),
         album.PadIfNeeded(
-            min_height=448, min_width=448, always_apply=True, border_mode=4
+            min_height=448,
+            min_width=448,
+            always_apply=True,
+            border_mode=4,
         ),
     ]
     return album.Compose(train_transform)
@@ -139,7 +148,10 @@ def get_training_augmentation_4():
     """
     train_transform = [
         album.PadIfNeeded(
-            min_height=448, min_width=448, always_apply=True, border_mode=4
+            min_height=448,
+            min_width=448,
+            always_apply=True,
+            border_mode=4,
         ),
         album.GaussNoise(var_limit=(0.0, 0.1), p=0.6),
         album.MultiplicativeNoise(multiplier=(0.98, 1.02), p=0.5),
@@ -169,7 +181,7 @@ def get_augmentation_by_value(augmentation_values):
             augmentation_fns.append(get_training_augmentation_4())
         else:
             raise ValueError(
-                f"Invalid augmentation value: {value}. Supported values: 1, 2, or 3."
+                f"Invalid augmentation value: {value}. Supported values: 1, 2, or 3.",
             )
     return augmentation_fns
 
@@ -183,7 +195,10 @@ def get_validation_augmentation():
     """
     test_transform = [
         album.PadIfNeeded(
-            min_height=448, min_width=448, always_apply=True, border_mode=0
+            min_height=448,
+            min_width=448,
+            always_apply=True,
+            border_mode=0,
         ),
     ]
     return album.Compose(test_transform)

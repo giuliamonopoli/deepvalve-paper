@@ -179,7 +179,11 @@ class RotateImageAndPointsTransform:
                 y_scaled = y_coord * height
 
                 new_x_scaled, new_y_scaled = self.rotate_point(
-                    x_scaled, y_scaled, center_x, center_y, self.angle
+                    x_scaled,
+                    y_scaled,
+                    center_x,
+                    center_y,
+                    self.angle,
                 )
 
                 # Scale the coordinates back down
@@ -187,7 +191,7 @@ class RotateImageAndPointsTransform:
                 new_y_coord = new_y_scaled / height
 
                 new_coords[key].append(
-                    [new_y_coord, new_x_coord]
+                    [new_y_coord, new_x_coord],
                 )  # Notice the swap back here
 
             # Convert back to tensor
@@ -324,7 +328,12 @@ class CustomTransform:
     """
 
     def __init__(
-        self, transforms, rotate_angle_range, crop_height, crop_width, crop_prob
+        self,
+        transforms,
+        rotate_angle_range,
+        crop_height,
+        crop_width,
+        crop_prob,
     ):
         self.rotate_angle_range = rotate_angle_range
         self.transforms = transforms
@@ -336,7 +345,9 @@ class CustomTransform:
         rotate_angle = random.uniform(*self.rotate_angle_range)
         sample = RotateImageAndPointsTransform(angle=rotate_angle)(sample)
         sample = CustomRandomResizedCrop(
-            self.crop_height, self.crop_width, self.crop_prob
+            self.crop_height,
+            self.crop_width,
+            self.crop_prob,
         )(sample)
 
         for transform in self.transforms:
@@ -358,10 +369,13 @@ def merge_dataloaders(data_loaders, batch_size=32, shuffle=True, num_workers=8):
         DataLoader: merged DataLoader
     """
     merged_dataset = ConcatDataset(
-        [data_loader.dataset for data_loader in data_loaders]
+        [data_loader.dataset for data_loader in data_loaders],
     )
     merged_data_loader = DataLoader(
-        merged_dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers
+        merged_dataset,
+        batch_size=batch_size,
+        shuffle=shuffle,
+        num_workers=num_workers,
     )
     return merged_data_loader
 
@@ -418,20 +432,32 @@ def plot_images_two_dataloaders(loaders, num_images=2):
             ax1.imshow(image1, cmap="gray")
             ax1.axis("off")
             ax1.scatter(
-                landmark1_lateral[:, 0], landmark1_lateral[:, 1], c="red", s=0.5
+                landmark1_lateral[:, 0],
+                landmark1_lateral[:, 1],
+                c="red",
+                s=0.5,
             )  # Set smaller point size
             ax1.scatter(
-                landmark1_septal[:, 0], landmark1_septal[:, 1], c="blue", s=0.5
+                landmark1_septal[:, 0],
+                landmark1_septal[:, 1],
+                c="blue",
+                s=0.5,
             )  # Set smaller point size
 
             # Plot image and landmarks from the second loader
             ax2.imshow(image2, cmap="gray")
             ax2.axis("off")
             ax2.scatter(
-                landmark2_lateral[:, 0], landmark2_lateral[:, 1], c="red", s=0.5
+                landmark2_lateral[:, 0],
+                landmark2_lateral[:, 1],
+                c="red",
+                s=0.5,
             )  # Set smaller point size
             ax2.scatter(
-                landmark2_septal[:, 0], landmark2_septal[:, 1], c="blue", s=0.5
+                landmark2_septal[:, 0],
+                landmark2_septal[:, 1],
+                c="blue",
+                s=0.5,
             )  # Set smaller point size
 
             plt.show()
@@ -477,7 +503,7 @@ def load_and_process_data(
         [
             # A.PadIfNeeded(min_height=height, min_width=width, always_apply=True, border_mode=cv2.BORDER_CONSTANT),
             A.Normalize(mean=[0.5], std=[0.5], max_pixel_value=255.0),
-        ]
+        ],
     )
 
     additional_transform = A.Compose(
@@ -487,7 +513,7 @@ def load_and_process_data(
             A.GaussNoise(p=0.5),
             A.CLAHE(clip_limit=2, p=0.2),
             base_transform,
-        ]
+        ],
     )
 
     custom_transform = CustomTransform(
@@ -534,7 +560,6 @@ def load_and_process_data(
     print("> Original training size", len(training_loader.dataset))
 
     for i in range(augment_prop):
-
         training_loader_augmented = dl.get_data_loader(
             mode="train",
             batch_size=batch_size_train,
@@ -554,7 +579,8 @@ def load_and_process_data(
     dataloaders = {
         x: y
         for x, y in zip(
-            ["train", "val", "test"], [training_loader, val_loader, testing_loader]
+            ["train", "val", "test"],
+            [training_loader, val_loader, testing_loader],
         )
     }
 

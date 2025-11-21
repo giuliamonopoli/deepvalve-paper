@@ -28,7 +28,7 @@ import torch
 # annotation_json = "/path/to/annotations.json"
 
 ## these two not needed if the annotations.json file is in the same folder
-# annotation_folder = "/path/to/annotations.json" 
+# annotation_folder = "/path/to/annotations.json"
 # data_frame_path = "/path/to/data.csv"
 
 labels = "label_class_dict.csv"

@@ -4,17 +4,17 @@ After successful installation of the [requirements](../requirements.txt),
 #### For regression-based and DSNT-based models
 
  - running the U-net regression model.
-    
+
     ```sh
     python3 /code/regression/unet_main.py
     ```
 
  - running the DSNT regression model
-    
+
     ```sh
     python3 /code/regression/dsnt_main.py
     ```
-    
+
 
 #### For segmentation-based models
 
