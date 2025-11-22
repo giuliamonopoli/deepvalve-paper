@@ -120,10 +120,10 @@ for i in range(forward_passes):
     dropout_dice_scores.append(dice_scores)
 
 dropout_predictions = np.array(
-    dropout_predictions
+    dropout_predictions,
 )  # Shape: (forward_passes, n_samples, 2, 448, 448)
 dropout_dice_scores = np.array(
-    dropout_dice_scores
+    dropout_dice_scores,
 )  # Shape: (forward_passes, n_samples)
 print("dropout_dice_scores shape is ", dropout_dice_scores.shape)
 
@@ -148,11 +148,11 @@ print(f"Overall dice score flatten shape is {overall_dice_scores}")
 print("Sample Dice Scores with Confidence Intervals:")
 for i, (mean_dice, lower_bound, upper_bound) in enumerate(sample_conf_intervals):
     print(
-        f"Sample {i + 1}: Dice Score = {mean_dice:.4f}, 95% CI = [{lower_bound:.4f}, {upper_bound:.4f}]"
+        f"Sample {i + 1}: Dice Score = {mean_dice:.4f}, 95% CI = [{lower_bound:.4f}, {upper_bound:.4f}]",
     )
 
 print(
-    f"\nOverall Dice Score: {overall_mean_dice:.4f}, 95% CI = [{overall_lower_bound:.4f}, {overall_upper_bound:.4f}]"
+    f"\nOverall Dice Score: {overall_mean_dice:.4f}, 95% CI = [{overall_lower_bound:.4f}, {overall_upper_bound:.4f}]",
 )
 
 # Save results to CSV

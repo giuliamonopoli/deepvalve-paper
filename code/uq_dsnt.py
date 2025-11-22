@@ -30,12 +30,14 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model = UNetDNST().to(device)
 model.load_state_dict(
     torch.load(
-        "/home/giulia/deepvalve/src/regression/regression_results/12_best_model.pth"
-    )
+        "/home/giulia/deepvalve/src/regression/regression_results/12_best_model.pth",
+    ),
 )
 
 dataloaders = utils.load_and_process_data(
-    batch_size_train=8, batch_size_val_test=1, num_workers=0
+    batch_size_train=8,
+    batch_size_val_test=1,
+    num_workers=0,
 )
 
 test_loader = dataloaders["test"]
@@ -45,7 +47,8 @@ def compute_spread(heatmap):
     """Compute spread as the expected squared distance from the heatmap peak."""
     h, w = heatmap.shape
     peak_y, peak_x = np.unravel_index(
-        np.argmax(heatmap), heatmap.shape
+        np.argmax(heatmap),
+        heatmap.shape,
     )  # Peak location
     y_coords, x_coords = np.meshgrid(np.arange(h), np.arange(w), indexing="ij")
     squared_distances = (x_coords - peak_x) ** 2 + (y_coords - peak_y) ** 2
@@ -75,12 +78,20 @@ def plot_heatmaps_with_spread(heatmaps, output_dir, case_id):
         heatmap = heatmap**0.5  # Enhances visibility
 
         axes[i].imshow(
-            heatmap, cmap="jet", interpolation="nearest", vmin=vmin, vmax=vmax
+            heatmap,
+            cmap="jet",
+            interpolation="nearest",
+            vmin=vmin,
+            vmax=vmax,
         )
         axes[i].set_title(f"PWD: {normalized_spreads[i]:.2f}", fontsize=10)
         axes[i].axis("off")
         im = axes[i].imshow(
-            heatmap, cmap="jet", interpolation="nearest", vmin=vmin, vmax=vmax
+            heatmap,
+            cmap="jet",
+            interpolation="nearest",
+            vmin=vmin,
+            vmax=vmax,
         )
     for i in range(num_heatmaps, len(axes)):
         axes[i].axis("off")

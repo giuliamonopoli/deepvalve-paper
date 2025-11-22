@@ -12,7 +12,7 @@ import numpy as np
 from scipy.ndimage import binary_dilation
 
 new_seg = torch.load(
-    "path/to/your/segmentation_results.pth"
+    "path/to/your/segmentation_results.pth",
 )  # Replace with your actual path
 new_images = new_seg["images"]
 new_pred = new_seg["predicted_mask"]

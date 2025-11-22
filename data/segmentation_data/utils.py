@@ -11,7 +11,7 @@ from scipy.interpolate import splev, splprep
 from torch.utils.data import ConcatDataset, DataLoader, Dataset
 
 sys.path.append(
-    os.path.join(os.path.dirname(__file__), "..", "..", "code", "segmentation")
+    os.path.join(os.path.dirname(__file__), "..", "..", "code", "segmentation"),
 )
 import config
 
