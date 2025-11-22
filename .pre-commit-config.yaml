@@ -11,15 +11,15 @@ repos:
       # - id: check-added-large-files
       # - id: check-toml
 
-  # - repo: https://github.com/asottile/add-trailing-comma
-  #   rev: v3.1.0
-  #   hooks:
-  #     - id: add-trailing-comma
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v3.1.0
+    hooks:
+      - id: add-trailing-comma
 
-  # - repo: https://github.com/psf/black
-  #   rev: 23.10.1
-  #   hooks:
-  #     - id: black
+  - repo: https://github.com/psf/black
+    rev: 23.10.1
+    hooks:
+      - id: black
 
   # - repo: https://github.com/charliermarsh/ruff-pre-commit
   #   # Ruff version.
@@ -33,8 +33,8 @@ repos:
   #   hooks:
   #     - id: mypy
 
-  - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v7.3.2
-    hooks:
-      - id: cspell
-        files: docs/(.+).md|README.md
+  # - repo: https://github.com/streetsidesoftware/cspell-cli
+  #   rev: v7.3.2
+  #   hooks:
+  #     - id: cspell
+  #       files: docs/(.+).md|README.md
