@@ -9,3 +9,10 @@ ignoreWords: [
     ipynb,
     oneline
   ]
+
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [],
+  "ignorePaths": ["node_modules", "dist"]
+}
