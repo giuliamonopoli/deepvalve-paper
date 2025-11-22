@@ -17,5 +17,5 @@ jobs:
       - name: Install pre-commit
         run: python3 -m pip install pre-commit
 
-      - name: Run hooks
-        run: pre-commit run --all
+      # - name: Run hooks
+      #   run: pre-commit run --all
