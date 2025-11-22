@@ -1,15 +1,15 @@
 repos:
   # - repo: https://github.com/pre-commit/pre-commit-hooks
   #   rev: v4.5.0
-    # hooks:
-    #   - id: check-yaml
-    #   - id: end-of-file-fixer
-      # - id: trailing-whitespace
-      # - id: check-docstring-first
-      # - id: debug-statements
-      # - id: requirements-txt-fixer
-      # - id: check-added-large-files
-      # - id: check-toml
+  #   hooks:
+  #     - id: check-yaml
+  #     - id: end-of-file-fixer
+  #     - id: trailing-whitespace
+  #     - id: check-docstring-first
+  #     - id: debug-statements
+  #     - id: requirements-txt-fixer
+  #     - id: check-added-large-files
+  #     - id: check-toml
 
   - repo: https://github.com/asottile/add-trailing-comma
     rev: v3.1.0
@@ -21,11 +21,11 @@ repos:
     hooks:
       - id: black
 
-  # - repo: https://github.com/charliermarsh/ruff-pre-commit
-  #   # Ruff version.
-  #   rev: 'v0.1.4'
-  #   hooks:
-  #     - id: ruff
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    # Ruff version.
+    rev: 'v0.1.4'
+    hooks:
+      - id: ruff
 
 
   # - repo: https://github.com/pre-commit/mirrors-mypy
