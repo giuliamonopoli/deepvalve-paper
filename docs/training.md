@@ -1,4 +1,4 @@
-# Training & Evaluating the DeepValve Model
+# Training & Evaluating  DeepValve 
 
 This page explains how to train and evaluate the DeepValve models (regression and segmentation).
 
@@ -49,6 +49,7 @@ python3 code/evaluate_models.py
 That will generate .txt files with the appropriate evaluation metrics of the trained models to the unseen data.
 and plot those predictions.
 Customised dice scores can be obtained running
+
 ```sh
 python3 code/dice_customised.py
 ```

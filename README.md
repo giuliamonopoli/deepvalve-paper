@@ -25,7 +25,7 @@ The base structure of the project's pipeline can be seen below
 <img src="https://github.com/giuliamonopoli/deepvalve-paper/blob/main/figs/DeepValve_pipeline.png"/>
 <p align="center">
 
-
+<!-- 
 ## Getting started
 **Note:** Date privacy restricts sharing of the original dataset and annotations. The code in this repository can be adapted to your own purposes. It is not intended to be able to perform automatic mitral valve detection in an end-to-end fashion in its current state.
 
@@ -64,7 +64,7 @@ and plot those predictions.
 Customised dice scores can be obtained running
 ```sh
 python3 code/dice_customised.py
-```
+``` -->
 
 
 ## Having issues
