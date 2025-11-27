@@ -5,3 +5,7 @@ chapters:
   - file: docs/about
   - file: docs/pipeline_guide
     title: Using the DeepValve Pipeline
+  - file: docs/training
+    title: Training & Evaluating the DeepValve Model
+  - file: docs/inference
+    title: Running Inference with DeepValve

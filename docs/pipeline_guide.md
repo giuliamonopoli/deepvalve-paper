@@ -13,12 +13,11 @@ cd "Supplementary code for the paper: DeepValve: an automatic detection pipeline
 
 2. Create and activate a Python environment (optional but recommended).
 
-3. Install dependencies (either with `requirements.txt` or `environment.yml`):
+3. Install dependencies (`requirements.txt`):
 
 ```bash
 pip install -r requirements.txt
-# or
-conda env create -f environment.yml
+
 conda activate deepvalve
 ```
 
@@ -31,3 +30,4 @@ Key folders and scripts:
   - `segmentation/` – segmentation models and utilities
   - `evaluate_models.py` – utilities to evaluate trained models
 - `data/` – data-related utilities and example configuration
+
