@@ -11,7 +11,7 @@ git clone https://github.com/giuliamonopoli/deepvalve-paper.git
 cd "Supplementary code for the paper: DeepValve: an automatic detection pipeline for the mitral valve in cardiac magnetic resonance imaging"
 ```
 
-2. Create and activate a Python environment (optional but recommended).
+2. Create and activate a Python environment.
 
 3. Install dependencies (`requirements.txt`):
 

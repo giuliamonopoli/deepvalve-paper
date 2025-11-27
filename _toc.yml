@@ -1,8 +1,9 @@
 format: jb-book
-root: README
+root: docs/about
 
-chapters:
-  - file: docs/about
+parts:
+- caption: Demos
+  chapters:
   - file: docs/pipeline_guide
     title: Using the DeepValve Pipeline
   - file: docs/training
