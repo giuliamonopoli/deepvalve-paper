@@ -1,7 +1,7 @@
 # Running Inference with DeepValve
 
 This page demonstrates how to run the full DeepValve inference pipeline on a single cardiac MRI:
-1. Automatically detect a bounding box around the mitral valve using a YOLO model.
+1. Automatically detect a bounding box around the heart using a pre-trained YOLO model.
 2. Use the DSNT-based keypoint model to predict valve landmarks inside this box.
 
 ## 1. Overview of the demo script
@@ -10,7 +10,7 @@ The demo script does the following:
 
 1. **Load a single image** (DICOM or NIfTI) from disk.
 2. **Normalize and convert** the image to the format expected by YOLO.
-3. **Run YOLO** to obtain a bounding box around the mitral valve.
+3. **Run YOLO** to obtain a bounding box around the heart.
 4. **Crop the original image** to the detected box, with safe padding if needed.
 5. **Preprocess the crop** (resize, normalize) for the DSNT keypoint model.
 6. **Run the DSNT model** to obtain septal and lateral valve keypoints.
