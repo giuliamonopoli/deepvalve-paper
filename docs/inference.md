@@ -55,7 +55,7 @@ import nibabel as nib
 
 sys.path.append("../")  
 import utils
-from dsnt_model import UNetDSNT
+from dsnt_reg import UNetDSNT
 
 # --- EDIT THESE ---
 DICOM_PATH = "/MnM2/dataset/274/274_LA_ES.nii.gz"
@@ -188,7 +188,7 @@ def run():
     inp_tensor, resized_for_vis = prepare_for_kp_model(crop, TARGET_SIZE)
 
     # 5) Load keypoint model and run
-    kp_model = UNetDNST().to(DEVICE)
+    kp_model = UNetDSNT().to(DEVICE)
     kp_model.load_state_dict(torch.load(KP_MODEL_PATH, map_location=DEVICE))
     kp_model.eval()
     with torch.no_grad():
