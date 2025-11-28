@@ -67,26 +67,23 @@ DEVICE = torch.device("cpu")
 
 
 def load_dicom_image(path, frame_idx=0):
-    """Load a single 2D frame from a DICOM or NIfTI file as float32."""
     ext = os.path.splitext(path)[-1].lower()
     if ext not in [".dcm", ".gz", ".nii"]:
-        raise ValueError(f"Unsupported file extension: {ext}")
-    elif ext == ".dcm":
+        raise ValueError(f"Unsupported  file extension: {ext}")
+
+    if ext == ".dcm":
         ds = pydicom.dcmread(path, force=True)
         arr = ds.pixel_array.astype(np.float32)
-
-        # Apply rescale slope/intercept if present
         slope = float(getattr(ds, "RescaleSlope", 1.0))
         intercept = float(getattr(ds, "RescaleIntercept", 0.0))
         img = arr * slope + intercept
-
-        # Handle MONOCHROME1 if needed
         pi = getattr(ds, "PhotometricInterpretation", "").upper()
         if "MONOCHROME1" in pi:
             img = img.max() - img
+        return img.astype(np.float32)  
 
-        return img.astype(np.float32)
-    elif ext == ".nii" or ext == ".gz":
+    # NIfTI (.nii or .nii.gz)
+    if ext == ".nii" or ext == ".gz":
         nifti_file = nib.load(path)
         img = nifti_file.get_fdata()[:, :, frame_idx]
         return img.astype(np.float32)
